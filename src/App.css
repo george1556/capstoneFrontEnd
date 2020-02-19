@@ -36,3 +36,32 @@
     transform: rotate(360deg);
   }
 }
+
+/* Login "edge" header */
+.edge-header {
+  height: 200px !important;
+}
+
+/* Front page MDBStreak background */
+
+.streak-md {
+  height: 300px !important;
+}
+
+/* Product Drop Down Menu styling */
+/* .productDropDownMenu a:hover,
+.productDropDownMenu {
+  color: white !important;
+} */
+
+/* Remove quotes and tilde from MDB Streak */
+li h5.text-center.font-italic.mb-0 {
+  opacity: 0;
+}
+li h2.h2-responsive {
+  opacity: 0;
+}
+
+/* .storeOverlay {
+  opacity: 1 !important;
+} */

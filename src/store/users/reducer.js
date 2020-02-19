@@ -19,7 +19,8 @@ import {
 //Using a default logged in user ID: 1, until authentication and login properly owrks.
 const initialState = {
   all: [],
-  err: {}
+  err: {},
+  loggedInUser: 0
   // loggedInUser: 1
 };
 
