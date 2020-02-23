@@ -29,12 +29,26 @@ export default (state = initialState, action) => {
     case UPDATE_IMAGE_PENDING:
     case FETCH_IMAGE_PENDING:
       return state;
-    case FETCH_ALL_IMAGES_SUCCESS:
+
     case FETCH_IMAGE_SUCCESS:
       // case UPDATE_IMAGE_SUCCESS:
       return {
         ...state,
         all: action.payload
+      };
+
+    case FETCH_ALL_IMAGES_SUCCESS:
+      // console.log("IMAGES ACTION.PAYLOAD: ", action.payload);
+      return {
+        ...state,
+        // Return the array of sorted images, by product id
+        all: action.payload.sort(function(a, b) {
+          let keyA = a.product.id;
+          let keyB = b.product.id;
+          if (keyA < keyB) return -1;
+          if (keyA > keyB) return 1;
+          return 0;
+        })
       };
 
     case ADD_NEW_IMAGE_SUCCESS:

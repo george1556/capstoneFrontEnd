@@ -12,6 +12,15 @@ import {
 } from "mdbreact";
 
 const ProductCard = props => {
+  //   console.log("PROPS.product", props.product);
+  let currentImage =
+    props.product.images > 0
+      ? props.product.images[0]
+      : "https://picsum.photos/id/16/288/195";
+
+  //   console.log("Current image: ", currentImage);
+  //   console.log("props.product.images: ", props.product.images);
+
   return (
     <MDBCard
       className="m-2"
@@ -24,33 +33,20 @@ const ProductCard = props => {
       <MDBCardImage
         cascade
         top
-        src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/shoes%20(3).jpg"
+        // src={props.product.images[0]}
+        src={currentImage}
         waves
+        //Adds the hover/zoom in effect when mouseover
+        hover
+        zoom
       />
       <MDBCardBody cascade className="text-center">
         <MDBCardTitle tag="h5">Shoes</MDBCardTitle>
-        <MDBCardTitle>
+        {/* <MDBCardTitle>
           <a href="#!">
             <strong>Product name</strong>
           </a>
-        </MDBCardTitle>
-        <ul className="rating">
-          <li>
-            <MDBIcon icon="star" />
-          </li>
-          <li>
-            <MDBIcon icon="star" />
-          </li>
-          <li>
-            <MDBIcon icon="star" />
-          </li>
-          <li>
-            <MDBIcon icon="star" />
-          </li>
-          <li>
-            <MDBIcon className="far" icon="star" />
-          </li>
-        </ul>
+        </MDBCardTitle> */}
         <MDBCardText>
           Temporibus autem quibusdam et aut officiis debitis aut rerum
           necessitatibus saepe eveniet ut et voluptates. Temporibus autem
@@ -65,34 +61,11 @@ const ProductCard = props => {
                 color="transparent"
                 size="lg"
                 className="p-1 m-0 mr-2 z-depth-0"
+                onClick={() => props.addToCart(props.product)}
               >
                 <MDBIcon icon="shopping-cart" />
               </MDBBtn>
               <div>Add to Cart</div>
-            </MDBTooltip>
-            <MDBTooltip placement="top">
-              <MDBBtn
-                tag="a"
-                href="https://mdbootstrap.com"
-                target="_blank"
-                color="transparent"
-                size="lg"
-                className="p-1 m-0 mr-2 z-depth-0"
-              >
-                <MDBIcon icon="share-alt" />
-              </MDBBtn>
-              <div>Share</div>
-            </MDBTooltip>
-            <MDBTooltip placement="top">
-              <MDBBtn
-                tag="a"
-                color="transparent"
-                size="lg"
-                className="p-1 m-0 z-depth-0"
-              >
-                <MDBIcon icon="heart" className="red-text" />
-              </MDBBtn>
-              <div>Added to Wishlist</div>
             </MDBTooltip>
           </span>
         </MDBCardFooter>

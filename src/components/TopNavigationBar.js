@@ -15,7 +15,8 @@ import {
   MDBIcon,
   MDBNavbarBrand,
   MDBSticky,
-  MDBStickyContent
+  MDBStickyContent,
+  MDBBadge
 } from "mdbreact";
 import { useSelector } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
@@ -23,14 +24,17 @@ import { Link, withRouter } from "react-router-dom";
 // import logo from "../../public/H2Studio-small.png";
 
 const TopNavigationBar = props => {
-  const users = useSelector(state => state.users.all);
-  const products = useSelector(state => state.products.all);
-  const transactions = useSelector(state => state.transactions.all);
-  const images = useSelector(state => state.images.all);
+  // const users = useSelector(state => state.users.all);
+  // const products = useSelector(state => state.products.all);
+  // const transactions = useSelector(state => state.transactions.all);
+  // const images = useSelector(state => state.images.all);
+  const cartCount = useSelector(state => state.shoppingCart.cart.length);
 
-  console.log("PRODUCTS: ", products);
-  console.log("TRANSACTIONS: ", transactions);
-  console.log("IMAGES: ", images);
+  // console.log("CartCount: ", cartCount);
+
+  // console.log("PRODUCTS: ", products);
+  // console.log("TRANSACTIONS: ", transactions);
+  // console.log("IMAGES: ", images);
 
   return (
     <MDBContainer>
@@ -95,9 +99,10 @@ const TopNavigationBar = props => {
           }}
         >
           <MDBNavLink to="/cart">
-            <MDBIcon icon="shopping-cart" />
+            <MDBIcon icon="shopping-cart"></MDBIcon>
             &nbsp;&nbsp;Cart
           </MDBNavLink>
+          <span className="counter">{cartCount}</span>
         </MDBNavItem>
         <MDBNavItem style={{ paddingTop: "15px", paddingBottom: "5px" }}>
           <MDBNavLink
