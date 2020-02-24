@@ -37,11 +37,7 @@ const ProductCard = props => {
       <MDBCardBody cascade className="text-center">
         <MDBCardTitle tag="h5">{props.product.title}</MDBCardTitle>
 
-        <MDBCardText>
-          Temporibus autem quibusdam et aut officiis debitis aut rerum
-          necessitatibus saepe eveniet ut et voluptates. Temporibus autem
-          quibusdam. Lorem Ipsum dolor ament.
-        </MDBCardText>
+        <MDBCardText>{props.product.summary}</MDBCardText>
         <MDBCardFooter>
           <span className="float-left">$&nbsp;{props.product.price}</span>
           <span className="float-right">

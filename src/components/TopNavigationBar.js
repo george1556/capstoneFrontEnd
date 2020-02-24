@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { BrowserRouter, Redirect, Router } from "react-router-dom";
-// import { withRouter } from "react-router";
+import React from "react";
+
 import {
   MDBNav,
   MDBNavItem,
@@ -10,36 +9,18 @@ import {
   MDBDropdownMenu,
   MDBDropdownItem,
   MDBContainer,
-  MDBEdgeHeader,
-  MDBFreeBird,
-  MDBIcon,
-  MDBNavbarBrand,
-  MDBSticky,
-  MDBStickyContent,
-  MDBBadge
+  MDBIcon
 } from "mdbreact";
-import { useSelector } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
 
-// import logo from "../../public/H2Studio-small.png";
+import H2Studio from "./H2Studio.png";
+import { useSelector } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 const TopNavigationBar = props => {
-  // const users = useSelector(state => state.users.all);
-  // const products = useSelector(state => state.products.all);
-  // const transactions = useSelector(state => state.transactions.all);
-  // const images = useSelector(state => state.images.all);
   const cartCount = useSelector(state => state.shoppingCart.cart.length);
-
-  // console.log("CartCount: ", cartCount);
-
-  // console.log("PRODUCTS: ", products);
-  // console.log("TRANSACTIONS: ", transactions);
-  // console.log("IMAGES: ", images);
 
   return (
     <MDBContainer>
-      {/* <MDBStickyContent style={{ background: "#fff", height: "465px" }}>
-        <MDBSticky> */}
       <MDBNav
         left
         pills
@@ -47,7 +28,8 @@ const TopNavigationBar = props => {
         style={{ marginTop: "15px", backgroundColor: "white" }}
       >
         <img
-          src="https://i.ibb.co/dQcy0LK/H2-STUDIO-FONT-ON-SIDE-BLACK.png"
+          // src="https://i.ibb.co/dQcy0LK/H2-STUDIO-FONT-ON-SIDE-BLACK.png"
+          src={H2Studio}
           alt="logo"
           height="60"
           style={{ marginLeft: "15px", marginRight: "15px" }}
@@ -115,50 +97,8 @@ const TopNavigationBar = props => {
           </MDBNavLink>
         </MDBNavItem>
       </MDBNav>
-      {/* </MDBSticky>
-      </MDBStickyContent> */}
     </MDBContainer>
   );
 };
 
 export default withRouter(TopNavigationBar);
-// export default TopNavigationBar;
-
-// import React from "react";
-// import TopNavBar from "../TopNavigationBar";
-// import ProductCard from "../productCards/ProductCard";
-// import { MDBContainer, MDBRow, MDBCol, MDBStreak } from "mdbreact";
-
-// const Store = props => {
-//   return (
-//     <div>
-//       <TopNavBar />
-//       <MDBContainer style={{ height: "2000px", marginTop: "20px" }}>
-//         <MDBStreak
-//           size="md"
-//           //   by="George"
-//           overlayClass="pattern-1"
-//           photo="https://industrial-maid.com/wp-content/uploads/2018/09/Metal-Manufacturing-and-Fabrication.jpg"
-//         >
-//           Unique Handmade Items
-//         </MDBStreak>
-//         <MDBRow style={{ marginTop: "20px" }}>
-//           {/* <MDBCol size="12"> */}
-//           {/* <div className="card-columns"> */}
-//           <MDBCol lg="4" md="6" xs="12">
-//             <ProductCard />
-//           </MDBCol>
-//           <MDBCol lg="4" md="6" xs="12">
-//             <ProductCard />
-//           </MDBCol>
-//           <MDBCol lg="4" md="6" xs="12">
-//             <ProductCard />
-//           </MDBCol>
-//           {/* </div> */}
-//         </MDBRow>
-//       </MDBContainer>
-//       <div>stuff</div>
-//     </div>
-//   );
-// };
-// export default Store;

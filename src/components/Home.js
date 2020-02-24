@@ -16,7 +16,7 @@ import {
 } from "mdbreact";
 import { Link } from "react-router-dom";
 
-import logo from "./H2Studio.jpg";
+import H2Studio from "./H2Studio.jpg";
 
 import TopNav from "./TopNavigationBar";
 import SectionContainer from "./sectionContainer";
@@ -27,6 +27,8 @@ const Home = props => {
 
   //Category card
   let categoryCards = [];
+
+  console.log("h2studio, ", H2Studio);
 
   return (
     <div>
@@ -58,11 +60,13 @@ const Home = props => {
         <MDBRow style={{ marginTop: "20px" }}>
           <MDBCol md="4">
             <MDBCard className="mx-4" style={{ width: "19rem" }} collection>
-              <MDBCardImage
-                className="img-fluid"
-                zoom
-                src="https://picsum.photos/472/708?random=1"
-              />
+              <Link to="/store">
+                <MDBCardImage
+                  className="img-fluid"
+                  zoom
+                  src="https://picsum.photos/472/708?random=1"
+                />
+              </Link>
               <div className="stripe dark">
                 <Link to="/store">
                   <p>
@@ -75,11 +79,13 @@ const Home = props => {
           </MDBCol>
           <MDBCol md="4">
             <MDBCard className="mx-4" style={{ width: "19rem" }} collection>
-              <MDBCardImage
-                className="img-fluid"
-                zoom
-                src="https://picsum.photos/472/708?random=1"
-              />
+              <Link to="/custom">
+                <MDBCardImage
+                  className="img-fluid"
+                  zoom
+                  src="https://picsum.photos/472/708?random=1"
+                />
+              </Link>
 
               <div className="stripe dark">
                 <Link to="/custom">
@@ -93,11 +99,13 @@ const Home = props => {
           </MDBCol>
           <MDBCol md="4">
             <MDBCard className="mx-4" style={{ width: "19rem" }} collection>
-              <MDBCardImage
-                className="img-fluid"
-                zoom
-                src="https://picsum.photos/472/708?random=1"
-              />
+              <Link to="/business">
+                <MDBCardImage
+                  className="img-fluid"
+                  zoom
+                  src="https://picsum.photos/472/708?random=1"
+                />
+              </Link>
 
               <div className="stripe dark">
                 <Link to="/business">
