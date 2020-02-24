@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TopNavBar from "../TopNavigationBar";
 import ProductCard from "../productCards/ProductCard";
 import { MDBContainer, MDBRow, MDBCol, MDBStreak } from "mdbreact";
@@ -11,9 +11,6 @@ const Store = props => {
   const allImages = useSelector(state => state.images.all);
   const cart = useSelector(state => state.shoppingCart.cart);
   let newCart = cart;
-
-  //State holding the number of items to display
-  const [numOfItems, setNumOfItems] = useState(15);
 
   const dispatch = useDispatch();
 
@@ -30,7 +27,6 @@ const Store = props => {
           product["images"] = [];
           product.images.push(image.addressField);
         }
-        // product["image"] = image.addressField;
       }
     });
   });
@@ -43,21 +39,8 @@ const Store = props => {
     dispatch(updateCart(newCart));
   };
 
-  console.log("PRODUCTLISTWITHIMAGES: ", productListWithImages);
-
-  // console.log(
-  //   "images from productlistwithimages: ",
-  //   productListWithImages[0].images[0]
-  // );
-
-  // let count = numOfItems;
   let productCardList = productListWithImages.map(product => (
-    <ProductCard
-      key={product.id}
-      product={product}
-      addToCart={addToCart}
-      // currentImage={product.images.length > 0 ? product.images[0] : ""}
-    />
+    <ProductCard key={product.id} product={product} addToCart={addToCart} />
   ));
 
   if (productListWithImages.length < 3) {
@@ -90,24 +73,8 @@ const Store = props => {
           >
             Unique Handmade Items
           </MDBStreak>
-          {/* <MDBRow style={{ marginTop: "20px" }}>
-            <MDBCol lg="4" md="6" xs="12">
-              <ProductCard />
-            </MDBCol>
-            <MDBCol lg="4" md="6" xs="12">
-              <ProductCard />
-            </MDBCol>
-            <MDBCol lg="4" md="6" xs="12">
-              <ProductCard />
-            </MDBCol>
-          </MDBRow> */}
           <MDBRow>
-            <MDBCol>
-              {/* <img
-                src={productListWithImages[0].images[0]}
-                style={{ marginLeft: "15px", marginRight: "15px" }}
-              /> */}
-            </MDBCol>
+            <MDBCol></MDBCol>
           </MDBRow>
           <MDBRow>
             <MDBCol>{productCardList}</MDBCol>

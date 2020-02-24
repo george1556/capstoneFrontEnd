@@ -14,8 +14,10 @@ import {
   MDBTableHead,
   MDBInput,
   MDBBtn,
-  MDBIcon
+  MDBIcon,
+  MDBNavLink
 } from "mdbreact";
+import { Link } from "react-router-dom";
 
 import { updateCart } from "../../store/cart/actions";
 
@@ -101,7 +103,16 @@ const Cart = props => {
             <MDBCardBody>
               <MDBCardTitle style={{ margin: "auto" }}>
                 <MDBIcon icon="shopping-cart"></MDBIcon>&nbsp;&nbsp;You have
-                nothing in your cart.
+                nothing in your cart.&nbsp;&nbsp;
+                {/* <MDBNavLink size="sm" to="/cart">
+                  Go to store
+                </MDBNavLink> */}
+                <Link to="/store">
+                  <MDBBtn color="elegant" size="sm">
+                    Go to store&nbsp;&nbsp;
+                    <MDBIcon icon="angle-double-right" />
+                  </MDBBtn>
+                </Link>
               </MDBCardTitle>
             </MDBCardBody>
           ) : (

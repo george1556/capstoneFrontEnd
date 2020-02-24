@@ -12,15 +12,6 @@ import {
 } from "mdbreact";
 
 const ProductCard = props => {
-  //   console.log("PROPS.product", props.product);
-  let currentImage =
-    props.product.images > 0
-      ? props.product.images[0]
-      : "https://picsum.photos/id/16/288/195";
-
-  //   console.log("Current image: ", currentImage);
-  //   console.log("props.product.images: ", props.product.images);
-
   return (
     <MDBCard
       className="m-2"
@@ -33,27 +24,26 @@ const ProductCard = props => {
       <MDBCardImage
         cascade
         top
-        // src={props.product.images[0]}
-        src={currentImage}
+        src={
+          props.product.images == undefined
+            ? "https://via.placeholder.com/288x195"
+            : props.product.images[0]
+        }
         waves
         //Adds the hover/zoom in effect when mouseover
         hover
         zoom
       />
       <MDBCardBody cascade className="text-center">
-        <MDBCardTitle tag="h5">Shoes</MDBCardTitle>
-        {/* <MDBCardTitle>
-          <a href="#!">
-            <strong>Product name</strong>
-          </a>
-        </MDBCardTitle> */}
+        <MDBCardTitle tag="h5">{props.product.title}</MDBCardTitle>
+
         <MDBCardText>
           Temporibus autem quibusdam et aut officiis debitis aut rerum
           necessitatibus saepe eveniet ut et voluptates. Temporibus autem
           quibusdam. Lorem Ipsum dolor ament.
         </MDBCardText>
         <MDBCardFooter>
-          <span className="float-left">49$</span>
+          <span className="float-left">$&nbsp;{props.product.price}</span>
           <span className="float-right">
             <MDBTooltip placement="top">
               <MDBBtn

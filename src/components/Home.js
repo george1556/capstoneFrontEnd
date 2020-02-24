@@ -14,6 +14,7 @@ import {
   MDBStreak,
   MDBCardImage
 } from "mdbreact";
+import { Link } from "react-router-dom";
 
 import logo from "./H2Studio.jpg";
 
@@ -63,12 +64,12 @@ const Home = props => {
                 src="https://picsum.photos/472/708?random=1"
               />
               <div className="stripe dark">
-                <a href="#!">
+                <Link to="/store">
                   <p>
                     Store
                     <MDBIcon icon="chevron-right" />
                   </p>
-                </a>
+                </Link>
               </div>
             </MDBCard>
           </MDBCol>
@@ -81,12 +82,12 @@ const Home = props => {
               />
 
               <div className="stripe dark">
-                <a href="#!">
+                <Link to="/custom">
                   <p>
                     Custom
                     <MDBIcon icon="chevron-right" />
                   </p>
-                </a>
+                </Link>
               </div>
             </MDBCard>
           </MDBCol>
@@ -99,12 +100,12 @@ const Home = props => {
               />
 
               <div className="stripe dark">
-                <a href="#!">
+                <Link to="/business">
                   <p>
                     Business
                     <MDBIcon icon="chevron-right" />
                   </p>
-                </a>
+                </Link>
               </div>
             </MDBCard>
           </MDBCol>
