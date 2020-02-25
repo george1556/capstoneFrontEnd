@@ -5,6 +5,7 @@ import { MDBContainer, MDBRow, MDBCol, MDBStreak } from "mdbreact";
 import { useSelector, useDispatch } from "react-redux";
 
 import { updateCart } from "../../store/cart/actions";
+import { updateCartTotal } from "../../store/cart/actions";
 
 const Store = props => {
   const products = useSelector(state => state.products.all);
@@ -13,8 +14,6 @@ const Store = props => {
   let newCart = cart;
 
   const dispatch = useDispatch();
-
-  console.log("CART: ", cart);
 
   let productListWithImages = products;
 
@@ -32,11 +31,14 @@ const Store = props => {
   });
 
   const addToCart = item => {
-    console.log("ADD TO CART item: ", item);
-
     newCart.push(item);
 
+    let newTotal = newCart.reduce((acc, currentItem) => {
+      return acc + currentItem.price;
+    }, 0.0);
+
     dispatch(updateCart(newCart));
+    dispatch(updateCartTotal(newTotal.toFixed(2)));
   };
 
   let productCardList = productListWithImages.map(product => (

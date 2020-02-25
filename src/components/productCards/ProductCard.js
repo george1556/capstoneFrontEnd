@@ -16,7 +16,10 @@ const ProductCard = props => {
     <MDBCard
       className="m-2"
       // style={{ width: "22rem" }}
-      style={{ display: "inline-block", width: "18rem" }}
+      style={{
+        display: "inline-block",
+        width: "18rem"
+      }}
       cascade
       ecommerce
       wide

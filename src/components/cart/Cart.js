@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TopNavigationaBar from "../TopNavigationBar";
 import { useSelector, useDispatch } from "react-redux";
 import CartItem from "./CartItem";
+import { updateCartTotal } from "../../store/cart/actions";
 
 import {
   MDBRow,
@@ -15,7 +16,8 @@ import {
   MDBInput,
   MDBBtn,
   MDBIcon,
-  MDBNavLink
+  MDBNavLink,
+  MDBCol
 } from "mdbreact";
 import { Link } from "react-router-dom";
 
@@ -23,7 +25,10 @@ import { updateCart } from "../../store/cart/actions";
 
 const Cart = props => {
   const cart = useSelector(state => state.shoppingCart.cart);
+  const cartTotal = useSelector(state => state.shoppingCart.cartTotal);
   const dispatch = useDispatch();
+
+  //   let newCart = cart;
 
   //Force a re-render. Used when state updates, but page does not re-render as intended.
   const [update, setUpdate] = useState(0);
@@ -35,22 +40,29 @@ const Cart = props => {
       return index !== itemIndex;
     });
 
+    let newTotal = updatedCart.reduce((acc, currentIndex) => {
+      return (acc += currentIndex.price);
+    }, 0.0);
+
     dispatch(updateCart(updatedCart));
+    dispatch(updateCartTotal(newTotal.toFixed(2)));
     setUpdate(update + 1);
   };
 
   //Function passed down to add an item to the cart, and update cart store-state.
   const addOneToCart = item => {
-    console.log("item passed in: ", item);
     let updatedCart = cart;
-    console.log("updated cart=cart: ", updatedCart);
+
     updatedCart.push(item);
-    console.log("updatedCart after push: ", updatedCart);
+
+    let newTotal = updatedCart.reduce((acc, currentIndex) => {
+      return (acc += currentIndex.price);
+    }, 0.0);
+
     dispatch(updateCart(updatedCart));
+    dispatch(updateCartTotal(newTotal.toFixed(2)));
     setUpdate(update + 1);
   };
-
-  console.log("CART CONTENTS: ", cart);
 
   //Count number of items in cart to determine quantities
   let cartCount = {};
@@ -73,17 +85,13 @@ const Cart = props => {
   //Find the total price based on current cart items and quantities
   let total = 0.0;
   cartArrayWithQuantities.forEach(cartItem => {
-    console.log(
-      "cartItem.price * cartItem.quantity).toFixed(2): ",
-      (cartItem.price * cartItem.quantity).toFixed(2)
-    );
-    // total += (cartItem.price * cartItem.quantity).toFixed(2);
     let currentAmount = Number((cartItem.price * cartItem.quantity).toFixed(2));
     total += Number(currentAmount.toFixed(2));
   });
-  console.log("TOTAL: ", total);
 
-  console.log("cartArrayWithQuantities: ", cartArrayWithQuantities);
+  //   const updateCartTotal = () => {
+  //     dispatch(updateCart(total.toFixed(2)));
+  //   };
 
   let cartRows = cartArrayWithQuantities.map(cartItem => (
     <CartItem
@@ -91,8 +99,11 @@ const Cart = props => {
       key={cartItem.id}
       removeOneFromCart={removeOneFromCart}
       addOneToCart={addOneToCart}
+      //   updateCartTotal={updateCartTotal}
     />
   ));
+
+  console.log("cartTotal: ", cartTotal);
 
   return (
     <div>
@@ -137,7 +148,48 @@ const Cart = props => {
                 <MDBTableBody>
                   {cartRows}
                   <tr>
-                    <td colSpan="5">Total: ${total.toFixed(2)}</td>
+                    <td colSpan="5" style={{ textAlign: "right" }}>
+                      {/* <h5>
+                        <b> Total: ${total.toFixed(2)}</b>&nbsp;&nbsp;&nbsp;
+                        <small className="text-muted">
+                            Full name as displayed on card
+                          </small>
+                        <Link to="/checkout">
+                          <MDBBtn color="elegant">
+                            Checkout&nbsp;&nbsp;&nbsp;
+                            <MDBIcon far icon="credit-card" />
+                          </MDBBtn>
+                        </Link>
+                      </h5> */}
+                      <MDBRow>
+                        <MDBCol sm="5" md="6" lg="9">
+                          <h5 style={{ marginBottom: 0, marginTop: "5px" }}>
+                            <b> Total: ${total.toFixed(2)}</b>
+                          </h5>
+                          <small className="text-muted">
+                            +Shipping and Handling
+                          </small>
+                        </MDBCol>
+                        <MDBCol
+                          style={{ textAlign: "Left" }}
+                          sm="7"
+                          md="6"
+                          lg="3"
+                        >
+                          <Link
+                            to={{
+                              pathname: "/checkout"
+                              //   state: { total: total.toFixed(2) }
+                            }}
+                          >
+                            <MDBBtn onClick={updateCartTotal} color="elegant">
+                              Checkout&nbsp;&nbsp;&nbsp;
+                              <MDBIcon far icon="credit-card" />
+                            </MDBBtn>
+                          </Link>
+                        </MDBCol>
+                      </MDBRow>
+                    </td>
                   </tr>
                 </MDBTableBody>
               </MDBTable>

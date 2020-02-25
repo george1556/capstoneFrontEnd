@@ -10,11 +10,13 @@ import {
   UPDATE_CART_SUCCESS,
   FETCH_CART_FAILED,
   FETCH_CART_SUCCESS,
-  FETCH_CART_PENDING
+  FETCH_CART_PENDING,
+  UPDATE_CART_TOTAL_SUCCESS
 } from "./constants";
 
 const initialState = {
   cart: [],
+  cartTotal: "",
   err: {}
 };
 
@@ -39,6 +41,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         cart: action.payload
+      };
+
+    case UPDATE_CART_TOTAL_SUCCESS:
+      return {
+        ...state,
+        cartTotal: action.payload
       };
 
     // case ADD_NEW_PRODUCT_SUCCESS:

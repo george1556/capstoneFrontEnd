@@ -22,7 +22,7 @@ const TopNavigationBar = props => {
   return (
     <MDBContainer>
       <MDBNav
-        left
+        // left
         pills
         color="dark"
         style={{ marginTop: "15px", backgroundColor: "white" }}
@@ -35,11 +35,11 @@ const TopNavigationBar = props => {
           style={{ marginLeft: "15px", marginRight: "15px" }}
         />
         <MDBNavItem style={{ paddingTop: "15px", paddingBottom: "5px" }}>
-          <MDBNavLink to={{ pathname: "/home" }}>Home</MDBNavLink>
+          <MDBNavLink to="/home">Home</MDBNavLink>
         </MDBNavItem>
 
         <MDBNavItem style={{ paddingTop: "15px", paddingBottom: "5px" }}>
-          <MDBNavLink to={{ pathname: "/about" }}>About Us</MDBNavLink>
+          <MDBNavLink to="/about">About Us</MDBNavLink>
         </MDBNavItem>
 
         <MDBNavItem style={{ paddingTop: "15px", paddingBottom: "5px" }}>
@@ -87,14 +87,7 @@ const TopNavigationBar = props => {
           <span className="counter">{cartCount}</span>
         </MDBNavItem>
         <MDBNavItem style={{ paddingTop: "15px", paddingBottom: "5px" }}>
-          <MDBNavLink
-            to={{
-              pathname: "/login",
-              state: {}
-            }}
-          >
-            Login
-          </MDBNavLink>
+          <MDBNavLink to="/login">Login</MDBNavLink>
         </MDBNavItem>
       </MDBNav>
     </MDBContainer>

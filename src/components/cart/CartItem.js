@@ -17,19 +17,22 @@ const CartItem = props => {
           <button
             onClick={() => {
               props.removeOneFromCart(props.product.id);
+              //   props.updateCartTotal();
             }}
             className="minus"
           ></button>
           <input
+            readOnly
             className="quantity"
             name="quantity"
             value={props.product.quantity}
-            onChange={() => console.log("change")}
+            // onChange={}
             type="number"
           />
           <button
             onClick={() => {
               props.addOneToCart(props.product);
+              //   props.updateCartTotal();
             }}
             className="plus"
           ></button>

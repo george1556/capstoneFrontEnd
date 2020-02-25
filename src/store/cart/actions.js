@@ -12,7 +12,8 @@ import {
   UPDATE_CART_SUCCESS,
   FETCH_CART_FAILED,
   FETCH_CART_SUCCESS,
-  FETCH_CART_PENDING
+  FETCH_CART_PENDING,
+  UPDATE_CART_TOTAL_SUCCESS
 } from "./constants";
 
 // export const fetchAllProducts = () => async dispatch => {
@@ -97,6 +98,13 @@ import {
 export const updateCart = updatedCart => async dispatch => {
   dispatch({
     type: UPDATE_CART_SUCCESS,
+    payload: updatedCart
+  });
+};
+
+export const updateCartTotal = updatedCart => async dispatch => {
+  dispatch({
+    type: UPDATE_CART_TOTAL_SUCCESS,
     payload: updatedCart
   });
 };

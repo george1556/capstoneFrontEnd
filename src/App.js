@@ -18,6 +18,7 @@ import about from "../src/components/about/About";
 import productstore from "./components/productsMenu/Store";
 import business from "./components/productsMenu/Business";
 import custom from "./components/productsMenu/Custom";
+import checkout from "./components/cart/Checkout";
 import { fetchAllProducts } from "./store/products/actions";
 import { fetchAllTransactions } from "./store/transactions/actions";
 import { fetchAllImages } from "./store/images/actions";
@@ -43,6 +44,7 @@ function App() {
             <Route exact path="/store" component={withRouter(productstore)} />
             <Route exact path="/custom" component={withRouter(custom)} />
             <Route exact path="/" component={withRouter(home)} />
+            <Route exact path="/checkout" component={withRouter(checkout)} />
 
             <Route exact path="/cart" component={withRouter(cart)} />
           </Switch>
