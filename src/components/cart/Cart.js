@@ -111,8 +111,8 @@ const Cart = props => {
       <MDBRow className="my-2" center>
         <MDBCard className="w-100" style={{ marginTop: "15px" }}>
           {cartRows.length === 0 ? (
-            <MDBCardBody>
-              <MDBCardTitle style={{ margin: "auto" }}>
+            <MDBCardBody className="minimumWidth">
+              <MDBCardTitle>
                 <MDBIcon icon="shopping-cart"></MDBIcon>&nbsp;&nbsp;You have
                 nothing in your cart.&nbsp;&nbsp;
                 {/* <MDBNavLink size="sm" to="/cart">

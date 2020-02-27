@@ -18,19 +18,42 @@ import {
   MDBIcon
 } from "mdbreact";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import TopNavBar from "../TopNavigationBar";
+import { stripeTransaction } from "../../store/transactions/actions";
 
 const Checkout = props => {
   const cart = useSelector(state => state.shoppingCart.cart);
   const cartTotal = useSelector(state => state.shoppingCart.cartTotal);
+  const transactions = useSelector(state => state.transactions);
+  console.log("Transactions: ", transactions);
 
-  //   console.log("cart: ", cart);
-  //   console.log("cartTotal: ", cartTotal);
+  const dispatch = useDispatch();
 
+  const [billingShipping, setBillingShipping] = useState(false);
   const [state, setstate] = useState({ activePill: "1" });
-  console.log("STATE: ", state.activePill);
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [city, setCity] = useState("");
+  const [billState, setBillState] = useState("");
+  const [zipCode, setZipCode] = useState("");
+
+  const [firstNameShipping, setFirstNameShipping] = useState("");
+  const [lastNameShipping, setLastNameShipping] = useState("");
+  const [emailShipping, setEmailShipping] = useState("");
+  const [addressShipping, setAddressShipping] = useState("");
+  const [address2Shipping, setAddress2Shipping] = useState("");
+  const [cityShipping, setCityShipping] = useState("");
+  const [shipstateShipping, setShipStateShipping] = useState("");
+  const [zipCodeShipping, setZipCodeShipping] = useState("");
+
+  //   console.log("shipstateshippping: ", shipstateShipping);
+  //   console.log("billstate: ", billState);
 
   //   let cartTotal = props.location.state.total;
   //   console.log("cartTotal: ", cartTotal);
@@ -42,9 +65,9 @@ const Checkout = props => {
     }
   };
 
-  const selectNextTab = () => {
-    setstate({ activePill: (+state.activePill + 1).toString() });
-  };
+  //   const selectNextTab = () => {
+  //     setstate({ activePill: (+state.activePill + 1).toString() });
+  //   };
 
   //Count number of items in cart to determine quantities
   let cartCount = {};
@@ -75,6 +98,43 @@ const Checkout = props => {
       </div>
     );
   });
+
+  const billingShippingSame = () => {
+    if (billingShipping === false) {
+      setBillingShipping(true);
+      setFirstNameShipping(firstName);
+      setLastNameShipping(lastName);
+      setEmailShipping(email);
+      setAddressShipping(address);
+      setAddress2Shipping(address2);
+      setCityShipping(city);
+      setShipStateShipping(billState);
+      setZipCodeShipping(zipCode);
+    } else {
+      setBillingShipping(false);
+      setFirstNameShipping("");
+      setLastNameShipping("");
+      setEmailShipping("");
+      setAddressShipping("");
+      setAddress2Shipping("");
+      setCityShipping("");
+      setShipStateShipping("");
+      setZipCodeShipping("");
+    }
+  };
+
+  const changeTab = e => {
+    e.preventDefault();
+    // setBillState();
+    // selectNextTab();
+    setstate({ activePill: (+state.activePill + 1).toString() });
+  };
+
+  const placeOrder = () => {
+    console.log("clicked");
+
+    console.log("dispatch?: ", dispatch(stripeTransaction()));
+  };
 
   return (
     <MDBContainer>
@@ -142,7 +202,7 @@ const Checkout = props => {
                 </MDBNav>
                 <MDBTabContent className="pt-4" activeItem={state.activePill}>
                   <MDBTabPane tabId="1">
-                    <form>
+                    <form onSubmit={changeTab}>
                       <MDBRow>
                         <MDBCol
                           md="6"
@@ -154,6 +214,10 @@ const Checkout = props => {
                             type="text"
                             id="firstName"
                             className="form-control"
+                            onChange={e => {
+                              setFirstName(e.target.value);
+                            }}
+                            required
                           />
                         </MDBCol>
                         <MDBCol
@@ -166,31 +230,23 @@ const Checkout = props => {
                             type="text"
                             id="lastName"
                             className="form-control"
+                            onChange={e => {
+                              setLastName(e.target.value);
+                            }}
+                            required
                           />
                         </MDBCol>
                         <MDBCol style={{ textAlign: "left" }}>
-                          {/* <div className="input-group mb-4">
-                            <div className="input-group-prepend">
-                              <span
-                                className="input-group-text"
-                                id="basic-addon1"
-                              >
-                                @
-                              </span>
-                            </div>
-                            <input
-                              type="text"
-                              className="form-control py-0"
-                              placeholder="Username"
-                              aria-describedby="basic-addon1"
-                            />
-                          </div> */}
-                          <label htmlFor="email">Email (optional)</label>
+                          <label htmlFor="email">Email</label>
                           <input
-                            type="text"
+                            type="email"
                             id="email"
                             className="form-control mb-4"
                             placeholder="youremail@example.com"
+                            onChange={e => {
+                              setEmail(e.target.value);
+                            }}
+                            required
                           />
                           <label htmlFor="address">Address</label>
                           <input
@@ -198,15 +254,31 @@ const Checkout = props => {
                             id="address"
                             className="form-control mb-4"
                             placeholder="1234 Main St"
+                            onChange={e => {
+                              setAddress(e.target.value);
+                            }}
+                            required
                           />
-                          <label htmlFor="address-2">
-                            Address 2 (optional)
-                          </label>
+                          <label htmlFor="address2">Address 2 (optional)</label>
                           <input
                             type="text"
-                            id="address-2"
+                            id="address2"
                             className="form-control mb-4"
                             placeholder="Apartment or suite"
+                            onChange={e => {
+                              setAddress2(e.target.value);
+                            }}
+                          />
+                          <label htmlFor="city">City</label>
+                          <input
+                            type="text"
+                            id="city"
+                            className="form-control mb-4"
+                            placeholder="Anytown"
+                            onChange={e => {
+                              setCity(e.target.value);
+                            }}
+                            required
                           />
                         </MDBCol>
                       </MDBRow>
@@ -221,10 +293,9 @@ const Checkout = props => {
                           <select
                             className="custom-select d-block w-100"
                             id="country"
-                            required
+                            readOnly
                           >
-                            <option>Choose...</option>
-                            <option>United States</option>
+                            <option selected>United States</option>
                           </select>
                           <div className="invalid-feedback">
                             Please select a valid country.
@@ -237,14 +308,19 @@ const Checkout = props => {
                           style={{ textAlign: "left" }}
                         >
                           <label htmlFor="state">State</label>
-                          <select
-                            className="custom-select d-block w-100"
+
+                          <input
+                            type="text"
+                            className="form-control"
                             id="state"
                             required
-                          >
-                            <option>Choose...</option>
-                            <option>California</option>
-                          </select>
+                            // maxLength="5"
+                            // minLength="5"
+                            onChange={e => {
+                              setBillState(e.target.value);
+                            }}
+                          />
+
                           <div className="invalid-feedback">
                             Please provide a valid state.
                           </div>
@@ -261,152 +337,307 @@ const Checkout = props => {
                             className="form-control"
                             id="zip"
                             required
+                            maxLength="5"
+                            minLength="5"
+                            onChange={e => {
+                              setZipCode(e.target.value);
+                            }}
                           />
                           <div className="invalid-feedback">
                             Zip code required.
                           </div>
                         </MDBCol>
                       </MDBRow>
+
                       <hr />
-                      <div className="mb-1" style={{ textAlign: "left" }}>
-                        <input
-                          type="checkbox"
-                          className="form-check-input filled-in"
-                          id="chekboxRules"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="chekboxRules"
-                        >
-                          I accept the terms and conditions
-                        </label>
-                      </div>
-                      <div className="mb-1" style={{ textAlign: "left" }}>
-                        <input
-                          type="checkbox"
-                          className="form-check-input filled-in"
-                          id="safeTheInfo"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="safeTheInfo"
-                        >
-                          Save this information for next time
-                        </label>
-                      </div>
-                      <div className="mb-1" style={{ textAlign: "left" }}>
-                        <input
-                          type="checkbox"
-                          className="form-check-input filled-in"
-                          id="subscribeNewsletter"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="subscribeNewsletter"
-                        >
-                          Subscribe to the newsletter
-                        </label>
-                      </div>
-                      <hr />
-                      <MDBBtn
-                        color="elegant"
-                        size="lg"
-                        block
-                        onClick={selectNextTab}
-                      >
-                        Next step
+                      <MDBBtn color="elegant" size="lg" block type="submit">
+                        Next step: <b>Shipping</b>
                       </MDBBtn>
                     </form>
                   </MDBTabPane>
                   <MDBTabPane tabId="2">
-                    <MDBRow>
-                      <MDBCol md="5" className="mb-4">
-                        <img
-                          src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg"
-                          alt=""
-                          className="img-fluid z-depth-1-half"
-                        />
-                      </MDBCol>
-                      <MDBCol md="7" className="mb-4">
-                        <h5 className="mb-3 h5">Additional premium support</h5>
-                        <p>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Veritatis, ea ut aperiam corrupti, dolorem.
-                        </p>
-                        <MDBSelect>
-                          <MDBSelectInput selected="Choose your option" />
-                          <MDBSelectOptions>
-                            <MDBSelectOption disabled>
-                              Choose a period of time
-                            </MDBSelectOption>
-                            <MDBSelectOption value="1">
-                              +6 months : 200$
-                            </MDBSelectOption>
-                            <MDBSelectOption value="2">
-                              +12 months: 400$
-                            </MDBSelectOption>
-                            <MDBSelectOption value="3">
-                              +18 months: 800$
-                            </MDBSelectOption>
-                            <MDBSelectOption value="3">
-                              +24 months: 1200$
-                            </MDBSelectOption>
-                          </MDBSelectOptions>
-                        </MDBSelect>
-                        <MDBBtn color="elegant">
-                          Add premium support to the cart
-                        </MDBBtn>
-                      </MDBCol>
-                    </MDBRow>
-                    <hr className="mb-5" />
-                    <MDBRow>
-                      <MDBCol md="5" className="mb-4">
-                        <img
-                          src="https://mdbootstrap.com/img/Photos/Others/images/44.jpg"
-                          alt=""
-                          className="img-fluid z-depth-1-half"
-                        />
-                      </MDBCol>
-                      <MDBCol md="7" className="mb-4">
-                        <h5 className="mb-3 h5">MDB Membership</h5>
-                        <p>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Veritatis, ea ut aperiam corrupti, dolorem.
-                        </p>
-                        <MDBSelect>
-                          <MDBSelectInput selected="Choose your option" />
-                          <MDBSelectOptions>
-                            <MDBSelectOption disabled>
-                              Choose a period of time
-                            </MDBSelectOption>
-                            <MDBSelectOption value="1">
-                              +6 months : 200$
-                            </MDBSelectOption>
-                            <MDBSelectOption value="2">
-                              +12 months: 400$
-                            </MDBSelectOption>
-                            <MDBSelectOption value="3">
-                              +18 months: 800$
-                            </MDBSelectOption>
-                            <MDBSelectOption value="3">
-                              +24 months: 1200$
-                            </MDBSelectOption>
-                          </MDBSelectOptions>
-                        </MDBSelect>
-                        <MDBBtn color="elegant">
-                          Add MDB Membership to the cart
-                        </MDBBtn>
-                      </MDBCol>
-                    </MDBRow>
-                    <hr className="mb-4" />
-                    <MDBBtn
-                      color="elegant"
-                      size="lg"
-                      block
-                      onClick={selectNextTab}
-                    >
-                      Next step
-                    </MDBBtn>
+                    <div className="mb-1" style={{ textAlign: "left" }}>
+                      <input
+                        type="checkbox"
+                        className="form-check-input filled-in"
+                        id="billingShipping"
+                        onClick={billingShippingSame}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="billingShipping"
+                      >
+                        Billing and shipping address are the same
+                      </label>
+                    </div>
+                    <hr className="mb-3" />
+
+                    <form onSubmit={changeTab}>
+                      <MDBRow>
+                        <MDBCol
+                          md="6"
+                          className="mb-4"
+                          style={{ textAlign: "left" }}
+                        >
+                          <label htmlFor="firstName">First name</label>
+                          {billingShipping === true ? (
+                            <input
+                              type="text"
+                              id="firstName"
+                              className="form-control"
+                              value={firstName}
+                              readOnly
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              id="firstName"
+                              className="form-control"
+                              value=""
+                              required
+                              onChange={e => {
+                                setFirstNameShipping(e.target.value);
+                              }}
+                            />
+                          )}
+                        </MDBCol>
+                        <MDBCol
+                          md="6"
+                          className="mb-2"
+                          style={{ textAlign: "left" }}
+                        >
+                          <label htmlFor="lastName">Last name</label>
+                          {billingShipping === true ? (
+                            <input
+                              type="text"
+                              id="lastName"
+                              className="form-control"
+                              value={lastName}
+                              readOnly
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              id="lastName"
+                              className="form-control"
+                              required
+                              value=""
+                              onChange={e => {
+                                setLastNameShipping(e.target.value);
+                              }}
+                            />
+                          )}
+                        </MDBCol>
+                        <MDBCol style={{ textAlign: "left" }}>
+                          <label htmlFor="email">Email</label>
+                          {billingShipping === true ? (
+                            <input
+                              type="email"
+                              id="email"
+                              className="form-control mb-4"
+                              placeholder="youremail@example.com"
+                              value={email}
+                              readOnly
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              id="email"
+                              className="form-control mb-4"
+                              placeholder="youremail@example.com"
+                              value=""
+                              onChange={e => {
+                                setEmailShipping(e.target.value);
+                              }}
+                            />
+                          )}
+
+                          <label htmlFor="address">Address</label>
+                          {billingShipping === true ? (
+                            <input
+                              type="text"
+                              id="address"
+                              className="form-control mb-4"
+                              value={address}
+                              readOnly
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              id="address"
+                              className="form-control mb-4"
+                              placeholder="1234 Main St"
+                              required
+                              value=""
+                              onChange={e => {
+                                setAddressShipping(e.target.value);
+                              }}
+                            />
+                          )}
+
+                          <label htmlFor="address-2">
+                            Address 2 (optional)
+                          </label>
+                          {billingShipping === true ? (
+                            <input
+                              type="text"
+                              id="address-2"
+                              className="form-control mb-4"
+                              placeholder="Apartment or suite"
+                              value={address2}
+                              readOnly
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              id="address-2"
+                              className="form-control mb-4"
+                              placeholder="Apartment or suite"
+                              value=""
+                              onChange={e => {
+                                setAddress2Shipping(e.target.value);
+                              }}
+                            />
+                          )}
+
+                          <label htmlFor="city">City</label>
+                          {billingShipping === true ? (
+                            <input
+                              type="text"
+                              id="city"
+                              className="form-control mb-4"
+                              placeholder="Anytown"
+                              value={city}
+                              readOnly
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              id="city"
+                              className="form-control mb-4"
+                              placeholder="Anytown"
+                              value=""
+                              onChange={e => {
+                                setCityShipping(e.target.value);
+                              }}
+                              required
+                            />
+                          )}
+                        </MDBCol>
+                      </MDBRow>
+                      <MDBRow>
+                        <MDBCol
+                          lg="4"
+                          md="12"
+                          className="mb-4"
+                          style={{ textAlign: "left" }}
+                        >
+                          <label htmlFor="country">Country</label>
+                          <select
+                            className="custom-select d-block w-100"
+                            id="country"
+                            required
+                            readOnly
+                          >
+                            {/* <option>Choose...</option> */}
+                            <option readOnly selected>
+                              United States
+                            </option>
+                          </select>
+                          <div className="invalid-feedback">
+                            Please select a valid country.
+                          </div>
+                        </MDBCol>
+                        <MDBCol
+                          lg="4"
+                          md="6"
+                          className="mb-4"
+                          style={{ textAlign: "left" }}
+                        >
+                          <label htmlFor="shipstate">State</label>
+
+                          {billingShipping === true ? (
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="shipstate"
+                              required
+                              readOnly
+                              value={billState}
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="state"
+                              required
+                              // maxLength="5"
+                              // minLength="5"
+                              value=""
+                              onChange={e => {
+                                setBillingShipping(e.target.value);
+                              }}
+                            />
+                          )}
+                        </MDBCol>
+                        <MDBCol
+                          lg="4"
+                          md="6"
+                          className="mb-4"
+                          style={{ textAlign: "left" }}
+                        >
+                          <label htmlFor="zip">Zip</label>
+                          {billingShipping === true ? (
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="zip"
+                              required
+                              maxLength="5"
+                              minLength="5"
+                              value={zipCode}
+                              readOnly
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="zip"
+                              required
+                              maxLength="5"
+                              minLength="5"
+                              value=""
+                              onChange={e => {
+                                setZipCodeShipping(e.target.value);
+                              }}
+                            />
+                          )}
+
+                          {/* <input
+                            type="text"
+                            className="form-control"
+                            id="zip"
+                            required
+                            maxLength="5"
+                            minLength="5"
+                          /> */}
+                          <div className="invalid-feedback">
+                            Zip code required.
+                          </div>
+                        </MDBCol>
+                      </MDBRow>
+
+                      <hr className="mb-4" />
+                      <MDBBtn
+                        color="elegant"
+                        size="lg"
+                        block
+                        onClick={changeTab}
+                        type="submit"
+                      >
+                        Next step: <b>Payment</b>
+                      </MDBBtn>
+                    </form>
                   </MDBTabPane>
                   <MDBTabPane tabId="3">
                     <div className="d-block my-3" style={{ textAlign: "left" }}>
@@ -513,7 +744,12 @@ const Checkout = props => {
                         </MDBCol>
                       </MDBRow>
                       <hr className="mb-4" />
-                      <MDBBtn size="lg" block color="success">
+                      <MDBBtn
+                        size="lg"
+                        block
+                        color="success"
+                        onClick={placeOrder}
+                      >
                         {/* <span style={{ color: "black" }}>Place order</span> */}
                         Place Order
                       </MDBBtn>
@@ -529,42 +765,68 @@ const Checkout = props => {
                 ) : (
                   ""
                 )} */}
-
-                <MDBCard>
-                  <MDBCardBody>
-                    <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
-                      Summary
-                    </h4>
-                    <hr />
-                    {/* <MDBRow>
-                      <MDBCol sm="8">
-                        MDBootstrap UI KIT (jQuery version) - License 6-10
-                        poeple + unlimited projects
-                      </MDBCol>
-                      <MDBCol sm="4">$ 2000</MDBCol>
-                    </MDBRow>
-                    <hr />
-                    <MDBRow>
-                      <MDBCol sm="8">Premium support - 2 years</MDBCol>
-                      <MDBCol sm="4">$ 200</MDBCol>
-                    </MDBRow>
-                    <hr />
-                    <MDBRow>
-                      <MDBCol sm="8">MDB Membership - 2 years</MDBCol>
-                      <MDBCol sm="4">$ 100</MDBCol>
-                    </MDBRow>
-                    <hr /> */}
-                    {summaryRows}
-                    <MDBRow>
-                      <MDBCol sm="8">
-                        <strong>Total</strong>
-                      </MDBCol>
-                      <MDBCol sm="4">
-                        <strong>$ {cartTotal}</strong>
-                      </MDBCol>
-                    </MDBRow>
-                  </MDBCardBody>
-                </MDBCard>
+                <MDBRow>
+                  <MDBCol>
+                    <MDBCard>
+                      <MDBCardBody>
+                        <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
+                          Summary
+                        </h4>
+                        <hr />
+                        {summaryRows}
+                        <MDBRow>
+                          <MDBCol sm="8">
+                            <strong>Total</strong>
+                          </MDBCol>
+                          <MDBCol sm="4">
+                            <strong>$ {cartTotal}</strong>
+                          </MDBCol>
+                        </MDBRow>
+                      </MDBCardBody>
+                    </MDBCard>
+                  </MDBCol>
+                </MDBRow>
+                <MDBRow>
+                  <MDBCol>
+                    {state.activePill === "3" ? (
+                      <MDBCard style={{ marginTop: "15px" }}>
+                        <MDBCardBody>
+                          <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
+                            Shipping
+                          </h4>
+                          <hr />
+                          <div
+                            style={{ textAlign: "left", marginLeft: "10px" }}
+                          >
+                            <div>
+                              {firstNameShipping}&nbsp;{lastNameShipping}
+                            </div>
+                            {/* <br /> */}
+                            <div>
+                              {addressShipping}&nbsp;{address2Shipping}
+                            </div>
+                            {/* <br /> */}
+                            <div>
+                              {cityShipping},&nbsp;{shipstateShipping}&nbsp;
+                              {zipCodeShipping}
+                            </div>
+                          </div>
+                          {/* {summaryRows}
+                        <MDBRow>
+                          <MDBCol sm="8">
+                            <strong>Total</strong>
+                          </MDBCol>
+                          <MDBCol sm="4">
+                            <strong>$ {cartTotal}</strong>
+                          </MDBCol>
+                        </MDBRow> */}
+                        </MDBCardBody>
+                      </MDBCard>
+                    ) : (
+                      <div></div>
+                    )}
+                  </MDBCol>
+                </MDBRow>
               </MDBCol>
             </MDBRow>
           </MDBCardBody>

@@ -15,8 +15,38 @@ import {
   DELETE_TRANSACTION_SUCCESS,
   FETCH_TRANSACTION_PENDING,
   FETCH_TRANSACTION_SUCCESS,
-  FETCH_TRANSACTION_FAILED
+  FETCH_TRANSACTION_FAILED,
+  ADD_NEW_STRIPE_SUCCESS
 } from "./constants";
+
+// Set your secret key. Remember to switch to your live secret key in production!
+// See your keys here: https://dashboard.stripe.com/account/apikeys
+const stripe = require("stripe")("sk_test_a4JBNRdXbbh1atscK9VePkJ8001hNVLtag");
+
+// (async () => {
+//   const paymentIntent = await stripe.paymentIntents.create({
+//     amount: 1000,
+//     currency: "usd",
+//     payment_method_types: ["card"],
+//     receipt_email: "jenny.rosen@example.com"
+//   });
+// })();
+
+// Add new stripeTransaction
+export const stripeTransaction = newStripe => async dispatch => {
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: 1000,
+    currency: "usd",
+    payment_method_types: ["card"],
+    receipt_email: "george.1556@gmail.com"
+  });
+
+  console.log("paymentintent: ", paymentIntent);
+  dispatch({
+    type: ADD_NEW_STRIPE_SUCCESS,
+    payload: paymentIntent
+  });
+};
 
 export const fetchAllTransactions = () => async dispatch => {
   dispatch({

@@ -13,12 +13,14 @@ import {
   UPDATE_TRANSACTION_SUCCESS,
   FETCH_TRANSACTION_FAILED,
   FETCH_TRANSACTION_SUCCESS,
-  FETCH_TRANSACTION_PENDING
+  FETCH_TRANSACTION_PENDING,
+  ADD_NEW_STRIPE_SUCCESS
 } from "./constants";
 
 const initialState = {
   all: [],
-  err: {}
+  err: {},
+  stripe: {}
 };
 
 export default (state = initialState, action) => {
@@ -35,6 +37,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         all: action.payload
+      };
+
+    case ADD_NEW_STRIPE_SUCCESS:
+      return {
+        ...state,
+        stripe: action.payload
       };
 
     case ADD_NEW_TRANSACTION_SUCCESS:

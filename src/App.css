@@ -141,3 +141,7 @@ li h2.h2-responsive {
 .def-number-input {
   margin: auto;
 }
+
+.minimumWidth {
+  min-width: "770px !important";
+}
