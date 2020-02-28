@@ -11,17 +11,22 @@ import {
   MDBNavLink,
   MDBTabPane,
   MDBTabContent,
-  MDBSelect,
-  MDBSelectInput,
-  MDBSelectOption,
-  MDBSelectOptions,
+  //   MDBSelect,
+  //   MDBSelectInput,
+  //   MDBSelectOption,
+  //   MDBSelectOptions,
   MDBIcon
 } from "mdbreact";
+
+// import H2Studio from "../H2Studio.png";
+import H2StudioMod from "../H2StudioMod3.png";
 
 import { useSelector, useDispatch } from "react-redux";
 
 import TopNavBar from "../TopNavigationBar";
 import { stripeTransaction } from "../../store/transactions/actions";
+
+import StripeCheckout from "react-stripe-checkout";
 
 const Checkout = props => {
   const cart = useSelector(state => state.shoppingCart.cart);
@@ -51,6 +56,10 @@ const Checkout = props => {
   const [cityShipping, setCityShipping] = useState("");
   const [shipstateShipping, setShipStateShipping] = useState("");
   const [zipCodeShipping, setZipCodeShipping] = useState("");
+
+  const [stripeCart, setStripeCart] = useState({});
+
+  const [orderStatus, setOrderStatus] = useState("");
 
   //   console.log("shipstateshippping: ", shipstateShipping);
   //   console.log("billstate: ", billState);
@@ -127,6 +136,10 @@ const Checkout = props => {
     e.preventDefault();
     // setBillState();
     // selectNextTab();
+    // setStripeCart({
+    //   cart: cart,
+    //   cartTotal: cartTotal
+    // });
     setstate({ activePill: (+state.activePill + 1).toString() });
   };
 
@@ -134,6 +147,35 @@ const Checkout = props => {
     console.log("clicked");
 
     console.log("dispatch?: ", dispatch(stripeTransaction()));
+  };
+
+  //   console.log("stripecart: ", stripeCart);
+
+  //   useEffect(() => {});
+  //   asfsd;
+
+  //   setStripeCart({
+  //     cart: cart,
+  //     cartTotal: cartTotal
+  //   });
+
+  const handleToken = (token, addresses) => {
+    console.log("stripe token: ", token, " addresses: ", addresses);
+
+    setOrderStatus(token.created);
+    // clear cart contents
+
+    //     token.id
+    //     token.client_ip
+    //     token.created  // Use this as the order number
+
+    // token.card.id
+    // token.card.address_zip
+    // token.card.brand
+    // token.card.exp_month
+    // token.card.exp_year
+    // token.card.last4
+    // token.card.name
   };
 
   return (
@@ -202,6 +244,10 @@ const Checkout = props => {
                 </MDBNav>
                 <MDBTabContent className="pt-4" activeItem={state.activePill}>
                   <MDBTabPane tabId="1">
+                    <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
+                      Billing Information
+                    </h4>
+                    <hr />
                     <form onSubmit={changeTab}>
                       <MDBRow>
                         <MDBCol
@@ -248,10 +294,10 @@ const Checkout = props => {
                             }}
                             required
                           />
-                          <label htmlFor="address">Address</label>
+                          <label htmlFor="billingaddress">Address</label>
                           <input
                             type="text"
-                            id="address"
+                            id="billingaddress"
                             className="form-control mb-4"
                             placeholder="1234 Main St"
                             onChange={e => {
@@ -259,20 +305,22 @@ const Checkout = props => {
                             }}
                             required
                           />
-                          <label htmlFor="address2">Address 2 (optional)</label>
+                          <label htmlFor="billingaddress2">
+                            Address 2 (optional)
+                          </label>
                           <input
                             type="text"
-                            id="address2"
+                            id="billingaddress2"
                             className="form-control mb-4"
                             placeholder="Apartment or suite"
                             onChange={e => {
                               setAddress2(e.target.value);
                             }}
                           />
-                          <label htmlFor="city">City</label>
+                          <label htmlFor="billingcity">City</label>
                           <input
                             type="text"
-                            id="city"
+                            id="billingcity"
                             className="form-control mb-4"
                             placeholder="Anytown"
                             onChange={e => {
@@ -289,13 +337,14 @@ const Checkout = props => {
                           className="mb-4"
                           style={{ textAlign: "left" }}
                         >
-                          <label htmlFor="country">Country</label>
+                          <label htmlFor="billingcountry">Country</label>
                           <select
                             className="custom-select d-block w-100"
-                            id="country"
+                            id="billingcountry"
                             readOnly
+                            defaultValue="United States"
                           >
-                            <option selected>United States</option>
+                            <option>United States</option>
                           </select>
                           <div className="invalid-feedback">
                             Please select a valid country.
@@ -307,13 +356,14 @@ const Checkout = props => {
                           className="mb-4"
                           style={{ textAlign: "left" }}
                         >
-                          <label htmlFor="state">State</label>
+                          <label htmlFor="billingstate">State</label>
 
                           <input
                             type="text"
                             className="form-control"
-                            id="state"
+                            id="billingstate"
                             required
+                            defaultValue=""
                             // maxLength="5"
                             // minLength="5"
                             onChange={e => {
@@ -333,7 +383,7 @@ const Checkout = props => {
                         >
                           <label htmlFor="zip">Zip</label>
                           <input
-                            type="text"
+                            type="number"
                             className="form-control"
                             id="zip"
                             required
@@ -356,6 +406,10 @@ const Checkout = props => {
                     </form>
                   </MDBTabPane>
                   <MDBTabPane tabId="2">
+                    <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
+                      Shipping Information
+                    </h4>
+                    <hr />
                     <div className="mb-1" style={{ textAlign: "left" }}>
                       <input
                         type="checkbox"
@@ -385,7 +439,7 @@ const Checkout = props => {
                               type="text"
                               id="firstName"
                               className="form-control"
-                              value={firstName}
+                              defaultValue={firstName}
                               readOnly
                             />
                           ) : (
@@ -393,7 +447,7 @@ const Checkout = props => {
                               type="text"
                               id="firstName"
                               className="form-control"
-                              value=""
+                              defaultValue=""
                               required
                               onChange={e => {
                                 setFirstNameShipping(e.target.value);
@@ -412,7 +466,7 @@ const Checkout = props => {
                               type="text"
                               id="lastName"
                               className="form-control"
-                              value={lastName}
+                              defaultValue={lastName}
                               readOnly
                             />
                           ) : (
@@ -421,7 +475,7 @@ const Checkout = props => {
                               id="lastName"
                               className="form-control"
                               required
-                              value=""
+                              defaultValue=""
                               onChange={e => {
                                 setLastNameShipping(e.target.value);
                               }}
@@ -436,7 +490,7 @@ const Checkout = props => {
                               id="email"
                               className="form-control mb-4"
                               placeholder="youremail@example.com"
-                              value={email}
+                              defaultValue={email}
                               readOnly
                             />
                           ) : (
@@ -445,7 +499,7 @@ const Checkout = props => {
                               id="email"
                               className="form-control mb-4"
                               placeholder="youremail@example.com"
-                              value=""
+                              defaultValue=""
                               onChange={e => {
                                 setEmailShipping(e.target.value);
                               }}
@@ -458,7 +512,7 @@ const Checkout = props => {
                               type="text"
                               id="address"
                               className="form-control mb-4"
-                              value={address}
+                              defaultValue={address}
                               readOnly
                             />
                           ) : (
@@ -468,7 +522,7 @@ const Checkout = props => {
                               className="form-control mb-4"
                               placeholder="1234 Main St"
                               required
-                              value=""
+                              defaultValue=""
                               onChange={e => {
                                 setAddressShipping(e.target.value);
                               }}
@@ -484,7 +538,7 @@ const Checkout = props => {
                               id="address-2"
                               className="form-control mb-4"
                               placeholder="Apartment or suite"
-                              value={address2}
+                              defaultValue={address2}
                               readOnly
                             />
                           ) : (
@@ -493,7 +547,7 @@ const Checkout = props => {
                               id="address-2"
                               className="form-control mb-4"
                               placeholder="Apartment or suite"
-                              value=""
+                              defaultValue=""
                               onChange={e => {
                                 setAddress2Shipping(e.target.value);
                               }}
@@ -507,7 +561,7 @@ const Checkout = props => {
                               id="city"
                               className="form-control mb-4"
                               placeholder="Anytown"
-                              value={city}
+                              defaultValue={city}
                               readOnly
                             />
                           ) : (
@@ -516,7 +570,7 @@ const Checkout = props => {
                               id="city"
                               className="form-control mb-4"
                               placeholder="Anytown"
-                              value=""
+                              defaultValue=""
                               onChange={e => {
                                 setCityShipping(e.target.value);
                               }}
@@ -563,7 +617,7 @@ const Checkout = props => {
                               id="shipstate"
                               required
                               readOnly
-                              value={billState}
+                              defaultValue={billState}
                             />
                           ) : (
                             <input
@@ -573,7 +627,7 @@ const Checkout = props => {
                               required
                               // maxLength="5"
                               // minLength="5"
-                              value=""
+                              defaultValue=""
                               onChange={e => {
                                 setBillingShipping(e.target.value);
                               }}
@@ -589,24 +643,24 @@ const Checkout = props => {
                           <label htmlFor="zip">Zip</label>
                           {billingShipping === true ? (
                             <input
-                              type="text"
+                              type="number"
                               className="form-control"
                               id="zip"
                               required
                               maxLength="5"
                               minLength="5"
-                              value={zipCode}
+                              defaultValue={zipCode}
                               readOnly
                             />
                           ) : (
                             <input
-                              type="text"
+                              type="number"
                               className="form-control"
                               id="zip"
                               required
                               maxLength="5"
                               minLength="5"
-                              value=""
+                              defaultValue=""
                               onChange={e => {
                                 setZipCodeShipping(e.target.value);
                               }}
@@ -632,7 +686,7 @@ const Checkout = props => {
                         color="elegant"
                         size="lg"
                         block
-                        onClick={changeTab}
+                        // onClick={changeTab}
                         type="submit"
                       >
                         Next step: <b>Payment</b>
@@ -640,120 +694,130 @@ const Checkout = props => {
                     </form>
                   </MDBTabPane>
                   <MDBTabPane tabId="3">
-                    <div className="d-block my-3" style={{ textAlign: "left" }}>
-                      <div className="mb-2">
-                        <input
-                          name="group2"
-                          type="radio"
-                          className="form-check-input with-gap"
-                          id="radioWithGap4"
-                          required
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="radioWithGap4"
-                        >
-                          Credit card
-                        </label>
-                      </div>
-                      <div className="mb-2">
-                        <input
-                          iname="group2"
-                          type="radio"
-                          className="form-check-input with-gap"
-                          id="radioWithGap5"
-                          required
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="radioWithGap5"
-                        >
-                          Debit card
-                        </label>
-                      </div>
-                      <div className="mb-2">
-                        <input
-                          name="group2"
-                          type="radio"
-                          className="form-check-input with-gap"
-                          id="radioWithGap6"
-                          required
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="radioWithGap6"
-                        >
-                          Paypal
-                        </label>
-                      </div>
-                      <MDBRow>
-                        <MDBCol md="6" className="mb-3">
-                          <label htmlFor="cc-name123">Name on card</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="cc-name123"
-                            required
-                          />
-                          <small className="text-muted">
-                            Full name as displayed on card
-                          </small>
-                          <div className="invalid-feedback">
-                            Name on card is required
-                          </div>
-                        </MDBCol>
-                        <MDBCol md="6" className="mb-3">
-                          <label htmlFor="cc-number123">
-                            Credit card number
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="cc-number123"
-                            required
-                          />
-                          <div className="invalid-feedback">
-                            Credit card number is required
-                          </div>
-                        </MDBCol>
-                      </MDBRow>
-                      <MDBRow>
-                        <MDBCol md="3" className="mb-3">
-                          <label htmlFor="cc-name123">Expiration</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="cc-name123"
-                            required
-                          />
-                          <div className="invalid-feedback">
-                            Name on card is required
-                          </div>
-                        </MDBCol>
-                        <MDBCol md="3" className="mb-3">
-                          <label htmlFor="cc-cvv123">CVV</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="cc-cvv123"
-                            required
-                          />
-                          <div className="invalid-feedback">
-                            Security code required
-                          </div>
-                        </MDBCol>
-                      </MDBRow>
-                      <hr className="mb-4" />
-                      <MDBBtn
-                        size="lg"
-                        block
-                        color="success"
-                        onClick={placeOrder}
+                    {orderStatus === "" ? (
+                      <div
+                        className="d-block my-3"
+                        style={{ textAlign: "left" }}
                       >
-                        {/* <span style={{ color: "black" }}>Place order</span> */}
-                        Place Order
-                      </MDBBtn>
-                    </div>
+                        <MDBRow>
+                          <MDBCol sm="12" lg="6">
+                            {/* {state.activePill === "3" ? ( */}
+                            <MDBCard style={{ marginTop: "15px" }}>
+                              <MDBCardBody>
+                                <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
+                                  Billing Address
+                                </h4>
+                                <hr />
+                                <div
+                                  style={{
+                                    textAlign: "left",
+                                    marginLeft: "10px"
+                                  }}
+                                >
+                                  <div>
+                                    {firstName}&nbsp;{lastName}
+                                  </div>
+                                  {/* <br /> */}
+                                  <div>
+                                    {address}&nbsp;{address2}
+                                  </div>
+                                  {/* <br /> */}
+                                  <div>
+                                    {city},&nbsp;{billState}
+                                    &nbsp;
+                                    {zipCode}
+                                  </div>
+                                </div>
+                              </MDBCardBody>
+                            </MDBCard>
+                            {/* ) : ( */}
+                            {/* <div></div>
+                          )} */}
+                          </MDBCol>
+                          <MDBCol sm="12" lg="6">
+                            {/* {state.activePill === "3" ? ( */}
+                            <MDBCard style={{ marginTop: "15px" }}>
+                              <MDBCardBody>
+                                <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
+                                  Shipping Address
+                                </h4>
+                                <hr />
+                                <div
+                                  style={{
+                                    textAlign: "left",
+                                    marginLeft: "10px"
+                                  }}
+                                >
+                                  <div>
+                                    {firstNameShipping}&nbsp;{lastNameShipping}
+                                  </div>
+                                  {/* <br /> */}
+                                  <div>
+                                    {addressShipping}&nbsp;{address2Shipping}
+                                  </div>
+                                  {/* <br /> */}
+                                  <div>
+                                    {cityShipping},&nbsp;{shipstateShipping}
+                                    &nbsp;
+                                    {zipCodeShipping}
+                                  </div>
+                                </div>
+                              </MDBCardBody>
+                            </MDBCard>
+                            {/* ) : (
+                            <div></div>
+                          )} */}
+                          </MDBCol>
+                        </MDBRow>
+
+                        <hr className="mb-4" />
+
+                        <StripeCheckout
+                          stripeKey="pk_test_94Wz8T5Yo9O8G3z7gdKlwP7g00FaC7CcjV"
+                          // label="Place Order" // title on the button
+                          image={H2StudioMod}
+                          token={handleToken}
+                          // billingAddress
+                          // shippingAddress
+                          zipCode
+                          card={{ address_city: "Phoenix" }}
+                          currency="USD"
+                          amount={cartTotal * 100}
+                          name="Checkout"
+                          ComponentClas="div"
+                          // allowRememberMe="false"
+                        >
+                          <MDBBtn
+                            size="lg"
+                            block
+                            color="success"
+                            onClick={placeOrder}
+                          >
+                            Place Order
+                          </MDBBtn>
+                        </StripeCheckout>
+                      </div>
+                    ) : (
+                      <MDBCard style={{ marginTop: "15px" }}>
+                        <MDBCardBody>
+                          <h4
+                            color="success"
+                            style={{ color: "#00c851 !important" }}
+                          >
+                            <div style={{ color: "#00c851 !important" }}>
+                              Thank you {firstName}! &nbsp;
+                              <MDBIcon
+                                // size="2x"
+                                className="green-text"
+                                icon="check-circle"
+                              />
+                            </div>
+                          </h4>
+                          <br />
+                          <h5>Your Order Number: {orderStatus} </h5>
+                        </MDBCardBody>
+                      </MDBCard>
+                    )}
                   </MDBTabPane>
                 </MDBTabContent>
               </MDBCol>
@@ -788,7 +852,7 @@ const Checkout = props => {
                 </MDBRow>
                 <MDBRow>
                   <MDBCol>
-                    {state.activePill === "3" ? (
+                    {/* {state.activePill === "3" ? (
                       <MDBCard style={{ marginTop: "15px" }}>
                         <MDBCardBody>
                           <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
@@ -801,30 +865,21 @@ const Checkout = props => {
                             <div>
                               {firstNameShipping}&nbsp;{lastNameShipping}
                             </div>
-                            {/* <br /> */}
+
                             <div>
                               {addressShipping}&nbsp;{address2Shipping}
                             </div>
-                            {/* <br /> */}
+
                             <div>
                               {cityShipping},&nbsp;{shipstateShipping}&nbsp;
                               {zipCodeShipping}
                             </div>
                           </div>
-                          {/* {summaryRows}
-                        <MDBRow>
-                          <MDBCol sm="8">
-                            <strong>Total</strong>
-                          </MDBCol>
-                          <MDBCol sm="4">
-                            <strong>$ {cartTotal}</strong>
-                          </MDBCol>
-                        </MDBRow> */}
                         </MDBCardBody>
                       </MDBCard>
                     ) : (
                       <div></div>
-                    )}
+                    )} */}
                   </MDBCol>
                 </MDBRow>
               </MDBCol>
