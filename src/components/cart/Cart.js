@@ -128,7 +128,7 @@ const Cart = props => {
             </MDBCardBody>
           ) : (
             <MDBCardBody>
-              <MDBTable hover className="product-table">
+              <MDBTable hover responsive className="product-table">
                 <MDBTableHead
                   className="font-weight-bold"
                   //color="mdb-color lighten-5"

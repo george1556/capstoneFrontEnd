@@ -24,15 +24,20 @@ import H2StudioMod from "../H2StudioMod3.png";
 import { useSelector, useDispatch } from "react-redux";
 
 import TopNavBar from "../TopNavigationBar";
-import { stripeTransaction } from "../../store/transactions/actions";
+// import { stripeTransaction } from "../../store/transactions/actions";
+import { updateCart } from "../../store/cart/actions";
+import { updateCartTotal } from "../../store/cart/actions";
+import { addNewTransaction } from "../../store/transactions/actions";
 
 import StripeCheckout from "react-stripe-checkout";
+
+import { Link } from "react-router-dom";
 
 const Checkout = props => {
   const cart = useSelector(state => state.shoppingCart.cart);
   const cartTotal = useSelector(state => state.shoppingCart.cartTotal);
   const transactions = useSelector(state => state.transactions);
-  console.log("Transactions: ", transactions);
+  //console.log("Transactions: ", transactions);
 
   const dispatch = useDispatch();
 
@@ -50,14 +55,14 @@ const Checkout = props => {
 
   const [firstNameShipping, setFirstNameShipping] = useState("");
   const [lastNameShipping, setLastNameShipping] = useState("");
-  const [emailShipping, setEmailShipping] = useState("");
+  //   const [emailShipping, setEmailShipping] = useState("");
   const [addressShipping, setAddressShipping] = useState("");
   const [address2Shipping, setAddress2Shipping] = useState("");
   const [cityShipping, setCityShipping] = useState("");
   const [shipstateShipping, setShipStateShipping] = useState("");
   const [zipCodeShipping, setZipCodeShipping] = useState("");
 
-  const [stripeCart, setStripeCart] = useState({});
+  //   const [stripeCart, setStripeCart] = useState({});
 
   const [orderStatus, setOrderStatus] = useState("");
 
@@ -113,7 +118,7 @@ const Checkout = props => {
       setBillingShipping(true);
       setFirstNameShipping(firstName);
       setLastNameShipping(lastName);
-      setEmailShipping(email);
+      //   setEmailShipping(email);
       setAddressShipping(address);
       setAddress2Shipping(address2);
       setCityShipping(city);
@@ -123,7 +128,7 @@ const Checkout = props => {
       setBillingShipping(false);
       setFirstNameShipping("");
       setLastNameShipping("");
-      setEmailShipping("");
+      //   setEmailShipping("");
       setAddressShipping("");
       setAddress2Shipping("");
       setCityShipping("");
@@ -134,49 +139,93 @@ const Checkout = props => {
 
   const changeTab = e => {
     e.preventDefault();
-    // setBillState();
-    // selectNextTab();
-    // setStripeCart({
-    //   cart: cart,
-    //   cartTotal: cartTotal
-    // });
+
     setstate({ activePill: (+state.activePill + 1).toString() });
   };
 
-  const placeOrder = () => {
-    console.log("clicked");
+  let newTransaction = {};
 
-    console.log("dispatch?: ", dispatch(stripeTransaction()));
-  };
-
-  //   console.log("stripecart: ", stripeCart);
-
-  //   useEffect(() => {});
-  //   asfsd;
-
-  //   setStripeCart({
-  //     cart: cart,
-  //     cartTotal: cartTotal
-  //   });
+  console.log("CART: ", cart);
 
   const handleToken = (token, addresses) => {
     console.log("stripe token: ", token, " addresses: ", addresses);
 
+    //Uses token from stripe to set order number
     setOrderStatus(token.created);
-    // clear cart contents
 
-    //     token.id
-    //     token.client_ip
-    //     token.created  // Use this as the order number
+    for (let i = 0; i < cart.length; i++) {
+      newTransaction = {
+        orderNumber: token.created,
+        email: email,
+        productId: cart[i].id,
+        productPrice: cart[i].price,
+        productQuantity: cart[i].quantity,
+        cartTotal: cartTotal,
+        customerIpAddress: token.client_ip,
+        stripeTokenId: token.id,
+        stripeCardId: token.card.id,
+        stripeCardZip: token.card.address_zip,
+        stripeCardBrand: token.card.brand,
+        stripeCardExpMonth: token.card.exp_month,
+        stripeCardExpYear: token.card.exp_year,
+        stripeCardLast4: token.card.last4,
+        stripeCardName: token.card.name,
+        billingFirstName: firstName,
+        billingLastName: lastName,
+        billingAddress: address,
+        billingaddress2: address2,
+        billingCity: city,
+        billingState: billState,
+        billingZipCode: zipCode,
+        shippingFirstName: firstNameShipping,
+        shippingLastName: lastNameShipping,
+        shippingAddress: addressShipping,
+        shippingAddress2: address2Shipping,
+        shippingCity: cityShipping,
+        shippingState: shipstateShipping,
+        shippingZipCode: zipCodeShipping
+      };
 
-    // token.card.id
-    // token.card.address_zip
-    // token.card.brand
-    // token.card.exp_month
-    // token.card.exp_year
-    // token.card.last4
-    // token.card.name
+      dispatch(addNewTransaction(newTransaction, newTransaction.productId));
+    }
+
+    // newTransaction = {
+    //   orderNumber: token.created,
+    //   email: email,
+    //   productId: cart[i].id,
+    //   cartTotal: cartTotal,
+    //   customerIpAddress: token.client_ip,
+    //   stripeTokenId: token.id,
+    //   stripeCardId: token.card.id,
+    //   stripeCardZip: token.card.address_zip,
+    //   stripeCardBrand: token.card.brand,
+    //   stripeCardExpMonth: token.card.exp_month,
+    //   stripeCardExpYear: token.card.exp_year,
+    //   stripeCardLast4: token.card.last4,
+    //   stripeCardName: token.card.name,
+    //   billingFirstName: firstName,
+    //   billingLastName: lastName,
+    //   billingAddress: address,
+    //   billingaddress2: address2,
+    //   billingCity: city,
+    //   billingState: billState,
+    //   billingZipCode: zipCode,
+    //   shippingFirstName: firstNameShipping,
+    //   shippingLastName: lastNameShipping,
+    //   shippingAddress: addressShipping,
+    //   shippingAddress2: address2Shipping,
+    //   shippingCity: cityShipping,
+    //   shippingState: shipstateShipping,
+    //   shippingZipCode: zipCodeShipping
+    // };
+
+    console.log("NEW TRANSACTION: ", newTransaction);
+
+    //Clears local cart contents and cart total after checkout
+    dispatch(updateCart([]));
+    dispatch(updateCartTotal(0.0));
   };
+  //   console.log("NEW TRANSACTION: ", newTransaction);
 
   return (
     <MDBContainer>
@@ -247,8 +296,25 @@ const Checkout = props => {
                     <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
                       Billing Information
                     </h4>
+
                     <hr />
                     <form onSubmit={changeTab}>
+                      <MDBRow>
+                        <MDBCol style={{ textAlign: "left" }}>
+                          <label htmlFor="email">Email</label>
+                          <input
+                            type="email"
+                            id="email"
+                            className="form-control mb-4"
+                            placeholder="youremail@example.com"
+                            onChange={e => {
+                              setEmail(e.target.value);
+                            }}
+                            required
+                          />
+                          <hr />
+                        </MDBCol>
+                      </MDBRow>
                       <MDBRow>
                         <MDBCol
                           md="6"
@@ -283,7 +349,7 @@ const Checkout = props => {
                           />
                         </MDBCol>
                         <MDBCol style={{ textAlign: "left" }}>
-                          <label htmlFor="email">Email</label>
+                          {/* <label htmlFor="email">Email</label>
                           <input
                             type="email"
                             id="email"
@@ -293,7 +359,7 @@ const Checkout = props => {
                               setEmail(e.target.value);
                             }}
                             required
-                          />
+                          /> */}
                           <label htmlFor="billingaddress">Address</label>
                           <input
                             type="text"
@@ -483,7 +549,7 @@ const Checkout = props => {
                           )}
                         </MDBCol>
                         <MDBCol style={{ textAlign: "left" }}>
-                          <label htmlFor="email">Email</label>
+                          {/* <label htmlFor="email">Email</label>
                           {billingShipping === true ? (
                             <input
                               type="email"
@@ -504,7 +570,7 @@ const Checkout = props => {
                                 setEmailShipping(e.target.value);
                               }}
                             />
-                          )}
+                          )} */}
 
                           <label htmlFor="address">Address</label>
                           {billingShipping === true ? (
@@ -791,7 +857,7 @@ const Checkout = props => {
                             size="lg"
                             block
                             color="success"
-                            onClick={placeOrder}
+                            // onClick={placeOrder}
                           >
                             Place Order
                           </MDBBtn>
@@ -822,13 +888,6 @@ const Checkout = props => {
                 </MDBTabContent>
               </MDBCol>
               <MDBCol lg="4" className="mb-4">
-                {/* {state.activePill === "3" ? (
-                  <MDBBtn color="elegant" size="lg">
-                    Place order
-                  </MDBBtn>
-                ) : (
-                  ""
-                )} */}
                 <MDBRow>
                   <MDBCol>
                     <MDBCard>
@@ -837,49 +896,32 @@ const Checkout = props => {
                           Summary
                         </h4>
                         <hr />
-                        {summaryRows}
-                        <MDBRow>
-                          <MDBCol sm="8">
-                            <strong>Total</strong>
-                          </MDBCol>
-                          <MDBCol sm="4">
-                            <strong>$ {cartTotal}</strong>
-                          </MDBCol>
-                        </MDBRow>
+                        {cartTotal <= 0.0 ? (
+                          <div>
+                            You have nothing in your cart.
+                            <br />{" "}
+                            <Link to="/store">
+                              <MDBBtn color="elegant" size="sm">
+                                Go to store&nbsp;&nbsp;
+                                <MDBIcon icon="angle-double-right" />
+                              </MDBBtn>
+                            </Link>{" "}
+                          </div>
+                        ) : (
+                          <div>
+                            {summaryRows}
+                            <MDBRow>
+                              <MDBCol sm="8">
+                                <strong>Total</strong>
+                              </MDBCol>
+                              <MDBCol sm="4">
+                                <strong>$ {cartTotal}</strong>
+                              </MDBCol>
+                            </MDBRow>
+                          </div>
+                        )}
                       </MDBCardBody>
                     </MDBCard>
-                  </MDBCol>
-                </MDBRow>
-                <MDBRow>
-                  <MDBCol>
-                    {/* {state.activePill === "3" ? (
-                      <MDBCard style={{ marginTop: "15px" }}>
-                        <MDBCardBody>
-                          <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
-                            Shipping
-                          </h4>
-                          <hr />
-                          <div
-                            style={{ textAlign: "left", marginLeft: "10px" }}
-                          >
-                            <div>
-                              {firstNameShipping}&nbsp;{lastNameShipping}
-                            </div>
-
-                            <div>
-                              {addressShipping}&nbsp;{address2Shipping}
-                            </div>
-
-                            <div>
-                              {cityShipping},&nbsp;{shipstateShipping}&nbsp;
-                              {zipCodeShipping}
-                            </div>
-                          </div>
-                        </MDBCardBody>
-                      </MDBCard>
-                    ) : (
-                      <div></div>
-                    )} */}
                   </MDBCol>
                 </MDBRow>
               </MDBCol>

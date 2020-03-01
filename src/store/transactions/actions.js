@@ -84,6 +84,29 @@ export const fetchTransaction = id => async dispatch => {
   }
 };
 
+// Add new Transaction
+export const addNewTransaction = (newTransaction, id) => async dispatch => {
+  dispatch({
+    type: ADD_NEW_TRANSACTION_PENDING
+  });
+
+  try {
+    let response = await axios.post(
+      `http://localhost:8080/transactions/${id}`,
+      newTransaction
+    );
+    dispatch({
+      type: ADD_NEW_TRANSACTION_SUCCESS,
+      payload: response.data
+    });
+  } catch (err) {
+    dispatch({
+      type: ADD_NEW_TRANSACTION_FAILED,
+      payload: err
+    });
+  }
+};
+
 // Add new PRODUCT
 // export const addNewPRODUCT = newPRODUCT => async dispatch => {
 //   dispatch({

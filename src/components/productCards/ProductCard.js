@@ -12,6 +12,11 @@ import {
 } from "mdbreact";
 
 const ProductCard = props => {
+  const addToCartClick = () => {
+    props.addToCart(props.product);
+    props.toast(props.product.title);
+  };
+
   return (
     <MDBCard
       className="m-2"
@@ -50,7 +55,7 @@ const ProductCard = props => {
                 color="transparent"
                 size="lg"
                 className="p-1 m-0 mr-2 z-depth-0"
-                onClick={() => props.addToCart(props.product)}
+                onClick={addToCartClick}
               >
                 <MDBIcon icon="shopping-cart" />
               </MDBBtn>

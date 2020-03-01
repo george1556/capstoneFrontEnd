@@ -1,7 +1,15 @@
 import React from "react";
 import TopNavBar from "../TopNavigationBar";
 import ProductCard from "../productCards/ProductCard";
-import { MDBContainer, MDBRow, MDBCol, MDBStreak } from "mdbreact";
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBStreak,
+  ToastContainer,
+  toast,
+  MDBIcon
+} from "mdbreact";
 import { useSelector, useDispatch } from "react-redux";
 
 import { updateCart } from "../../store/cart/actions";
@@ -30,6 +38,21 @@ const Store = props => {
     });
   });
 
+  const notify = productName => {
+    toast.success(
+      <h6>
+        <MDBIcon icon="check" size="2x" style={{ marginRight: "5px" }} />
+        &nbsp; Added <span style={{ fontWeight: "bold" }}>
+          {productName}
+        </span>{" "}
+        to cart!
+      </h6>,
+      {
+        closeButton: false
+      }
+    );
+  };
+
   const addToCart = item => {
     newCart.push(item);
 
@@ -42,7 +65,12 @@ const Store = props => {
   };
 
   let productCardList = productListWithImages.map(product => (
-    <ProductCard key={product.id} product={product} addToCart={addToCart} />
+    <ProductCard
+      key={product.id}
+      product={product}
+      toast={notify}
+      addToCart={addToCart}
+    />
   ));
 
   if (productListWithImages.length < 3) {
@@ -81,6 +109,11 @@ const Store = props => {
           <MDBRow>
             <MDBCol>{productCardList}</MDBCol>
           </MDBRow>
+          <ToastContainer
+            hideProgressBar={true}
+            newestOnTop={true}
+            autoClose={3000}
+          />
         </MDBContainer>
       </div>
     );

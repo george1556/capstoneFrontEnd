@@ -155,3 +155,7 @@ li h2.h2-responsive {
   background-color: #2e2e2e !important;
   color: white !important;
 } */
+
+.Toastify {
+  opacity: 0.65 !important;
+}
