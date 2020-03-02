@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import {
   MDBContainer,
   MDBRow,
@@ -12,14 +12,35 @@ import {
   MDBModalBody,
   MDBModalFooter,
   MDBEdgeHeader,
-  MDBFreeBird
+  MDBFreeBird,
+  MDBAlert
 } from "mdbreact";
+import { useSelector, useDispatch } from "react-redux";
 
 import TopNav from "../TopNavigationBar";
 import SectionContainer from "../sectionContainer";
+import { loginUser } from "../../store/users/actions";
 
-const Login = props => {
-  console.log("PROPS: ", props);
+const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const loggedInUser = useSelector(state => state.users.loggedInUser);
+
+  const dispatch = useDispatch();
+
+  const loginSubmit = e => {
+    e.preventDefault();
+    let user = {
+      username: username,
+      password: password
+    };
+
+    dispatch(loginUser(user));
+
+    setUsername("");
+    setPassword("");
+  };
+
   return (
     <div>
       <TopNav />
@@ -36,8 +57,31 @@ const Login = props => {
               <MDBCol md="6">
                 <MDBCard>
                   <MDBCardBody>
-                    <form>
+                    <form onSubmit={loginSubmit}>
                       <p className="h4 text-center py-4">Login</p>
+                      {loggedInUser.id === 0 ? (
+                        ""
+                      ) : (
+                        <div style={{ textAlign: "center" }}>
+                          <MDBAlert color="success">
+                            <MDBIcon
+                              className="green-text"
+                              icon="check-circle"
+                            />
+                            &nbsp;<b>You logged in successfully!</b>
+                          </MDBAlert>
+                        </div>
+                      )}
+                      {loggedInUser.firstName === "" ? (
+                        <div style={{ textAlign: "center" }}>
+                          <MDBAlert color="danger">
+                            <MDBIcon className="red-text" icon="times-circle" />
+                            &nbsp;<b>Your username or password do not match.</b>
+                          </MDBAlert>
+                        </div>
+                      ) : (
+                        ""
+                      )}
                       <div className="grey-text">
                         <MDBInput
                           label="Username"
@@ -47,6 +91,8 @@ const Login = props => {
                           validate
                           error="wrong"
                           success="right"
+                          value={username}
+                          onChange={e => setUsername(e.target.value)}
                         />
                         <MDBInput
                           label="Password"
@@ -54,6 +100,8 @@ const Login = props => {
                           group
                           type="password"
                           validate
+                          value={password}
+                          onChange={e => setPassword(e.target.value)}
                         />
                       </div>
                       <div className="text-center py-4 mt-3">

@@ -27,7 +27,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllUsers());
+    // dispatch(fetchAllUsers());
     dispatch(fetchAllProducts());
     dispatch(fetchAllTransactions());
     dispatch(fetchAllImages());

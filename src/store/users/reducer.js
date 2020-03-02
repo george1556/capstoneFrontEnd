@@ -13,14 +13,18 @@ import {
   UPDATE_USER_SUCCESS,
   FETCH_USER_FAILED,
   FETCH_USER_SUCCESS,
-  FETCH_USER_PENDING
+  FETCH_USER_PENDING,
+  LOGIN_USER_PENDING,
+  LOGIN_USER_FAILED,
+  LOGIN_USER_SUCCESS
 } from "./constants";
 
-//Using a default logged in user ID: 1, until authentication and login properly owrks.
+//Default loggedInUser with an id of 0 indicates no one is logged in.
+
 const initialState = {
   all: [],
   err: {},
-  loggedInUser: 0
+  loggedInUser: { id: 0 }
   // loggedInUser: 1
 };
 
@@ -31,6 +35,7 @@ export default (state = initialState, action) => {
     case DELETE_USER_PENDING:
     case UPDATE_USER_PENDING:
     case FETCH_USER_PENDING:
+    case LOGIN_USER_PENDING:
       return state;
     case FETCH_ALL_USERS_SUCCESS:
     case FETCH_USER_SUCCESS:
@@ -55,6 +60,12 @@ export default (state = initialState, action) => {
         ]
       };
 
+    case LOGIN_USER_SUCCESS:
+      return {
+        ...state,
+        loggedInUser: action.payload
+      };
+
     case DELETE_USER_SUCCESS:
       return {
         ...state,
@@ -66,6 +77,7 @@ export default (state = initialState, action) => {
     case DELETE_USER_FAILED:
     case UPDATE_USER_FAILED:
     case FETCH_USER_FAILED:
+    case LOGIN_USER_FAILED:
       return {
         ...state,
         err: action.payload

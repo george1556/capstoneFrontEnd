@@ -15,7 +15,10 @@ import {
   DELETE_USER_SUCCESS,
   FETCH_USER_PENDING,
   FETCH_USER_SUCCESS,
-  FETCH_USER_FAILED
+  FETCH_USER_FAILED,
+  LOGIN_USER_FAILED,
+  LOGIN_USER_PENDING,
+  LOGIN_USER_SUCCESS
 } from "./constants";
 
 export const fetchAllUsers = () => async dispatch => {
@@ -49,6 +52,24 @@ export const fetchUser = id => async dispatch => {
   } catch (err) {
     dispatch({
       type: FETCH_USER_FAILED,
+      payload: err
+    });
+  }
+};
+
+export const loginUser = user => async dispatch => {
+  dispatch({
+    type: LOGIN_USER_PENDING
+  });
+  try {
+    let response = await axios.post(`http://localhost:8080/users/login`, user);
+    dispatch({
+      type: LOGIN_USER_SUCCESS,
+      payload: response.data
+    });
+  } catch (err) {
+    dispatch({
+      type: LOGIN_USER_FAILED,
       payload: err
     });
   }
