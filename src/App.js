@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./App.css";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
   Route,
@@ -19,12 +19,14 @@ import productstore from "./components/productsMenu/Store";
 import business from "./components/productsMenu/Business";
 import custom from "./components/productsMenu/Custom";
 import checkout from "./components/cart/Checkout";
+import adminDashboard from "./components/adminDashboard/Dashboard";
 import { fetchAllProducts } from "./store/products/actions";
 import { fetchAllTransactions } from "./store/transactions/actions";
 import { fetchAllImages } from "./store/images/actions";
 
 function App() {
   const dispatch = useDispatch();
+  const loggedInUser = useSelector(state => state.users.loggedInUser);
 
   useEffect(() => {
     // dispatch(fetchAllUsers());
@@ -45,6 +47,15 @@ function App() {
             <Route exact path="/custom" component={withRouter(custom)} />
             <Route exact path="/" component={withRouter(home)} />
             <Route exact path="/checkout" component={withRouter(checkout)} />
+            {loggedInUser.id === 0 ? (
+              <Route exact path="/dashboard" component={withRouter(login)} />
+            ) : (
+              <Route
+                exact
+                path="/dashboard"
+                component={withRouter(adminDashboard)}
+              />
+            )}
 
             <Route exact path="/cart" component={withRouter(cart)} />
           </Switch>

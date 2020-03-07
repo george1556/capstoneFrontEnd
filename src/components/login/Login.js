@@ -82,33 +82,39 @@ const Login = () => {
                       ) : (
                         ""
                       )}
-                      <div className="grey-text">
-                        <MDBInput
-                          label="Username"
-                          icon="user-alt"
-                          group
-                          type="text"
-                          validate
-                          error="wrong"
-                          success="right"
-                          value={username}
-                          onChange={e => setUsername(e.target.value)}
-                        />
-                        <MDBInput
-                          label="Password"
-                          icon="lock"
-                          group
-                          type="password"
-                          validate
-                          value={password}
-                          onChange={e => setPassword(e.target.value)}
-                        />
-                      </div>
-                      <div className="text-center py-4 mt-3">
-                        <MDBBtn type="submit" color="dark">
-                          Login
-                        </MDBBtn>
-                      </div>
+                      {loggedInUser.id === 0 ? (
+                        <div>
+                          <div className="grey-text">
+                            <MDBInput
+                              label="Username"
+                              icon="user-alt"
+                              group
+                              type="text"
+                              validate
+                              error="wrong"
+                              success="right"
+                              value={username}
+                              onChange={e => setUsername(e.target.value)}
+                            />
+                            <MDBInput
+                              label="Password"
+                              icon="lock"
+                              group
+                              type="password"
+                              validate
+                              value={password}
+                              onChange={e => setPassword(e.target.value)}
+                            />
+                          </div>
+                          <div className="text-center py-4 mt-3">
+                            <MDBBtn type="submit" color="dark">
+                              Login
+                            </MDBBtn>
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
                     </form>
                   </MDBCardBody>
                 </MDBCard>

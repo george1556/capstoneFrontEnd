@@ -13,11 +13,21 @@ import {
 } from "mdbreact";
 
 import H2Studio from "./H2Studio.png";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
+
+import { logoutUser } from "../store/users/actions";
 
 const TopNavigationBar = props => {
   const cartCount = useSelector(state => state.shoppingCart.cart.length);
+  const loggedInUser = useSelector(state => state.users.loggedInUser);
+  const dispatch = useDispatch();
+
+  console.log("loggedInUser: ", loggedInUser);
+
+  const logoutClick = () => {
+    dispatch(logoutUser());
+  };
 
   return (
     <MDBContainer>
@@ -86,9 +96,30 @@ const TopNavigationBar = props => {
           </MDBNavLink>
           <span className="counter">{cartCount}</span>
         </MDBNavItem>
-        <MDBNavItem style={{ paddingTop: "15px", paddingBottom: "5px" }}>
-          <MDBNavLink to="/login">Login</MDBNavLink>
-        </MDBNavItem>
+        {loggedInUser.id === 0 ? (
+          <MDBNavItem style={{ paddingTop: "15px", paddingBottom: "5px" }}>
+            <MDBNavLink to="/login">Login</MDBNavLink>
+          </MDBNavItem>
+        ) : (
+          <MDBNavItem style={{ paddingTop: "15px", paddingBottom: "5px" }}>
+            <MDBDropdown>
+              <MDBDropdownToggle nav caret color="dark">
+                {loggedInUser.firstName}
+              </MDBDropdownToggle>
+              <MDBDropdownMenu color="dark">
+                <MDBDropdownItem
+                  onClick={() => {
+                    props.history.push("/dashboard");
+                  }}
+                >
+                  {" "}
+                  Admin Dashboard
+                </MDBDropdownItem>
+                <MDBDropdownItem onClick={logoutClick}>Logout</MDBDropdownItem>
+              </MDBDropdownMenu>
+            </MDBDropdown>
+          </MDBNavItem>
+        )}
       </MDBNav>
     </MDBContainer>
   );

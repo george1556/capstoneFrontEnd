@@ -18,7 +18,10 @@ import {
   FETCH_USER_FAILED,
   LOGIN_USER_FAILED,
   LOGIN_USER_PENDING,
-  LOGIN_USER_SUCCESS
+  LOGIN_USER_SUCCESS,
+  LOGOUT_USER_FAILED,
+  LOGOUT_USER_PENDING,
+  LOGOUT_USER_SUCCESS
 } from "./constants";
 
 export const fetchAllUsers = () => async dispatch => {
@@ -73,6 +76,16 @@ export const loginUser = user => async dispatch => {
       payload: err
     });
   }
+};
+
+export const logoutUser = () => async dispatch => {
+  let clearUser = {
+    id: 0
+  };
+  dispatch({
+    type: LOGOUT_USER_SUCCESS,
+    payload: clearUser
+  });
 };
 
 // Add new USER

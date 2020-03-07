@@ -16,7 +16,8 @@ import {
   FETCH_USER_PENDING,
   LOGIN_USER_PENDING,
   LOGIN_USER_FAILED,
-  LOGIN_USER_SUCCESS
+  LOGIN_USER_SUCCESS,
+  LOGOUT_USER_SUCCESS
 } from "./constants";
 
 //Default loggedInUser with an id of 0 indicates no one is logged in.
@@ -24,8 +25,23 @@ import {
 const initialState = {
   all: [],
   err: {},
-  loggedInUser: { id: 0 }
-  // loggedInUser: 1
+  // loggedInUser: { id: 0 }
+
+  //temporarily hardcoding admin in for testing
+  loggedInUser: {
+    id: 6,
+    firstName: "George",
+    lastName: "Howe",
+    email: "",
+    streetAddress: "",
+    zipCode: "",
+    city: "",
+    state: "",
+    admin: true,
+    accountLocked: false,
+    loginAttempts: 0,
+    userName: "superadmin"
+  }
 };
 
 export default (state = initialState, action) => {
@@ -61,6 +77,12 @@ export default (state = initialState, action) => {
       };
 
     case LOGIN_USER_SUCCESS:
+      return {
+        ...state,
+        loggedInUser: action.payload
+      };
+
+    case LOGOUT_USER_SUCCESS:
       return {
         ...state,
         loggedInUser: action.payload
