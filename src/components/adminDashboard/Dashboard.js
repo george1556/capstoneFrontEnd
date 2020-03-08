@@ -28,10 +28,18 @@ import TopNavBar from "../TopNavigationBar";
 
 import InventoryItem from "./InventoryItem";
 
+import EditItem from "./EditItem";
+
+import { updateProduct } from "../../store/products/actions";
+import { deleteProduct } from "../../store/products/actions";
+
 const Dashboard = () => {
   const products = useSelector(state => state.products.all);
   const allImages = useSelector(state => state.images.all);
   const [state, setstate] = useState({ activePill: "1" });
+  const [editItem, setEditItem] = useState({ id: 0 });
+
+  const dispatch = useDispatch();
 
   const togglePills = tab => {
     if (state.activePill !== tab) {
@@ -61,11 +69,17 @@ const Dashboard = () => {
   });
 
   const editButtonClick = item => {
-    console.log("EDIT CLICK: ", item.title);
+    setEditItem(item);
   };
 
   const deleteButtonClick = item => {
-    console.log("DELETE CLICK: ", item.title);
+    console.log("DELETE: ", item);
+    dispatch(deleteProduct(item.id));
+  };
+
+  const saveChangesClick = item => {
+    dispatch(updateProduct(item));
+    setEditItem({ id: 0 });
   };
 
   let inventoryRows = productListWithImages.map(item => (
@@ -79,6 +93,32 @@ const Dashboard = () => {
       //   updateCartTotal={updateCartTotal}
     />
   ));
+
+  let editRows = {};
+
+  {
+    editItem.id === 0
+      ? (editRows = (
+          <EditItem
+            key="0"
+            item={{
+              id: 0,
+              title: "No item selected.",
+              price: "",
+              description1: "",
+              description2: ""
+            }}
+            saveChangesClick={saveChangesClick}
+          />
+        ))
+      : (editRows = (
+          <EditItem
+            key={editItem.id}
+            item={editItem}
+            saveChangesClick={saveChangesClick}
+          />
+        ));
+  }
 
   return (
     <MDBContainer>
@@ -151,6 +191,9 @@ const Dashboard = () => {
                         {/* <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
                           Inventory List
                         </h4> */}
+                        <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
+                          Current Inventory Items
+                        </h4>
                         <div
                           style={{
                             border: "1px solid rgba(0,0,0,.1)",
@@ -162,7 +205,7 @@ const Dashboard = () => {
                             responsive
                             className="product-table inventory-table"
                             scrollY
-                            maxHeight="300px"
+                            maxHeight="500px"
                             small
                           >
                             {/* <MDBTableHead
@@ -188,8 +231,8 @@ const Dashboard = () => {
                         <MDBCard>
                           <MDBCardBody>
                             {" "}
-                            <hr />
-                            more stuff
+                            {/* <hr /> */}
+                            {editRows}
                           </MDBCardBody>
                         </MDBCard>
                       </MDBCol>

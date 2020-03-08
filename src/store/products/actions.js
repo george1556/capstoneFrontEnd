@@ -77,44 +77,44 @@ export const fetchProduct = id => async dispatch => {
 //   }
 // };
 
-// // Delete a PRODUCT
-// export const deletePRODUCT = id => async dispatch => {
-//   dispatch({
-//     type: DELETE_PRODUCT_PENDING
-//   });
-//   try {
-//     let response = await axios.delete(`http://localhost:8000/PRODUCTs/${id}`);
-//     dispatch({
-//       type: DELETE_PRODUCT_SUCCESS,
-//       payload: response.data
-//     });
-//   } catch (err) {
-//     dispatch({
-//       type: DELETE_PRODUCT_FAILED,
-//       payload: err
-//     });
-//   }
-// };
+// Delete a PRODUCT
+export const deleteProduct = id => async dispatch => {
+  dispatch({
+    type: DELETE_PRODUCT_PENDING
+  });
+  try {
+    let response = await axios.delete(`http://localhost:8080/products/${id}`);
+    dispatch({
+      type: DELETE_PRODUCT_SUCCESS,
+      payload: response.data
+    });
+  } catch (err) {
+    dispatch({
+      type: DELETE_PRODUCT_FAILED,
+      payload: err
+    });
+  }
+};
 
-// // Update PRODUCT
-// export const updatePRODUCT = (updatePRODUCT, id) => async dispatch => {
-//   dispatch({
-//     type: UPDATE_PRODUCT_PENDING
-//   });
+// Update PRODUCT
+export const updateProduct = updatedProduct => async dispatch => {
+  dispatch({
+    type: UPDATE_PRODUCT_PENDING
+  });
 
-//   try {
-//     let response = await axios.patch(
-//       `http://localhost:8000/PRODUCTs/${id}`,
-//       updatePRODUCT
-//     );
-//     dispatch({
-//       type: UPDATE_PRODUCT_SUCCESS,
-//       payload: response.data
-//     });
-//   } catch (err) {
-//     dispatch({
-//       type: UPDATE_PRODUCT_FAILED,
-//       payload: err
-//     });
-//   }
-// };
+  try {
+    let response = await axios.patch(
+      `http://localhost:8080/products`,
+      updatedProduct
+    );
+    dispatch({
+      type: UPDATE_PRODUCT_SUCCESS,
+      payload: response.data
+    });
+  } catch (err) {
+    dispatch({
+      type: UPDATE_PRODUCT_FAILED,
+      payload: err
+    });
+  }
+};

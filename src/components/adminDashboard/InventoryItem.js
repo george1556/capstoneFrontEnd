@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { MDBCard, MDBCardBody, MDBBtn, MDBRow, MDBCol } from "mdbreact";
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBBtn,
+  MDBRow,
+  MDBCol,
+  MDBModal,
+  MDBModalBody,
+  MDBModalHeader,
+  MDBModalFooter
+} from "mdbreact";
 
 const InventoryItem = props => {
   const [title, setTitle] = useState(props.item.title);
@@ -7,6 +17,17 @@ const InventoryItem = props => {
   const [price, setPrice] = useState(props.item.price);
   const [description1, setDescription1] = useState(props.item.description1);
   const [description2, setDescription2] = useState(props.item.description2);
+
+  const [deleteModal, setDeleteModal] = useState(false);
+
+  const deleteModalClick = () => {
+    setDeleteModal(!deleteModal);
+  };
+
+  const confirmDelete = () => {
+    props.deleteButtonClick(props.item);
+    setDeleteModal(!deleteModal);
+  };
 
   return (
     <tr>
@@ -52,10 +73,59 @@ const InventoryItem = props => {
                   size="sm"
                   style={{ display: "block", width: "100%" }}
                   className="adminDeleteButton"
-                  onClick={() => props.deleteButtonClick(props.item)}
+                  // onClick={() => props.deleteButtonClick(props.item)}
+                  onClick={() => setDeleteModal(!deleteModal)}
                 >
                   Delete
                 </MDBBtn>
+
+                <MDBModal
+                  isOpen={deleteModal}
+                  toggle={deleteModalClick}
+                  centered
+                >
+                  <MDBModalHeader
+                    toggle={deleteModalClick}
+                    style={{ textAlign: "center" }}
+                  >
+                    Permanently Delete Item
+                  </MDBModalHeader>
+                  <MDBModalBody>
+                    Are you sure you want to permanently delete this item from
+                    inventory? <br />
+                    <h5 style={{ marginTop: "5px" }}>
+                      <b>{title}</b>
+                    </h5>
+                    <hr />
+                    <MDBRow>
+                      <MDBCol>
+                        <MDBBtn
+                          color="elegant"
+                          style={{ backgroundColor: "#2e2e2e !important" }}
+                          onClick={() => setDeleteModal(!deleteModal)}
+                          style={{ display: "block", width: "100%", margin: 0 }}
+                        >
+                          <b>Cancel</b>
+                        </MDBBtn>
+                      </MDBCol>
+                      <MDBCol>
+                        <MDBBtn
+                          // color="danger"
+                          className="adminDeleteButton"
+                          // onClick={() => setDeleteModal(!deleteModal)}
+                          onClick={confirmDelete}
+                          style={{ display: "block", width: "100%", margin: 0 }}
+                        >
+                          <b>Delete</b>
+                        </MDBBtn>
+                      </MDBCol>
+                    </MDBRow>
+                  </MDBModalBody>
+                  {/* <MDBModalFooter> */}
+
+                  {/* <MDBBtn color="primary">Save changes</MDBBtn> */}
+                  {/* </MDBModalFooter> */}
+                </MDBModal>
               </MDBCol>
             </MDBRow>
           </MDBCardBody>
