@@ -8,23 +8,11 @@ const EditItem = props => {
   const [description1, setDescription1] = useState(props.item.description1);
   const [description2, setDescription2] = useState(props.item.description2);
 
-  //   console.log("EDIT ITEM PROPS: ", props.item);
-
   return (
     <form>
       <MDBRow>
         <MDBCol className="mb-4">
           {props.item.title === "No item selected." ? (
-            // <div
-            //   style={{ display: "block", width: "100%", textAlign: "center" }}
-            // >
-            //   <h5
-            //     className="mb-4 mt-1 h5 text-center font-weight-bold"
-            //     style={{ textAlign: "center" }}
-            //   >
-            //     No Item Selected.
-            //   </h5>
-            // </div>
             <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
               No Item Selected.
             </h4>
@@ -92,7 +80,6 @@ const EditItem = props => {
                     description4: props.item.description4
                   })
                 }
-                // type="submit"
               >
                 <b>Save Changes</b>
               </MDBBtn>

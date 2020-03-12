@@ -48,12 +48,6 @@
   height: 300px !important;
 }
 
-/* Product Drop Down Menu styling */
-/* .productDropDownMenu a:hover,
-.productDropDownMenu {
-  color: white !important;
-} */
-
 /* Remove quotes and tilde from MDB Streak */
 li h5.text-center.font-italic.mb-0 {
   opacity: 0;
@@ -62,16 +56,9 @@ li h2.h2-responsive {
   opacity: 0;
 }
 
-/* .storeOverlay {
-  opacity: 1 !important;
-} */
-
 .counter {
   top: -20px !important;
   margin-left: -10px !important;
-  /* background-color: #4285f4; */
-  /* background-color: #00c851; */
-  /* background-color: #ff8800; */
   background-color: #f57c00;
 }
 
@@ -146,25 +133,11 @@ li h2.h2-responsive {
   min-width: "770px !important";
 }
 
-/* .Checkout.is-desktop.Button {
-  background-color: #2e2e2e !important;
-  color: white !important;
-}
-
-.Button-animationWrapper-child--primary {
-  background-color: #2e2e2e !important;
-  color: white !important;
-} */
-
 .Toastify {
   opacity: 0.65 !important;
+  z-index: 9999999999999999;
+  position: absolute;
 }
-
-/* .adminInventoryTable {
-  height: 200px;
-  overflow-y: auto;
-  width: 100%;
-} */
 
 .adminEditButton {
   background-color: #f57c00 !important;
@@ -173,4 +146,8 @@ li h2.h2-responsive {
 .adminDeleteButton {
   background-color: #cc0000 !important;
   color: #fff !important;
+}
+
+.storeCards {
+  z-index: 100000;
 }

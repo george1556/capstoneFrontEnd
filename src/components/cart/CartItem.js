@@ -6,7 +6,7 @@ const CartItem = props => {
   return (
     <tr>
       <td>
-        <img src={props.product.images[0]} />
+        <img src={props.product.images[0]} alt=" " />
       </td>
       <td>
         <h6>{props.product.title}</h6>
@@ -17,7 +17,6 @@ const CartItem = props => {
           <button
             onClick={() => {
               props.removeOneFromCart(props.product.id);
-              //   props.updateCartTotal();
             }}
             className="minus"
           ></button>
@@ -26,20 +25,17 @@ const CartItem = props => {
             className="quantity"
             name="quantity"
             value={props.product.quantity}
-            // onChange={}
             type="number"
           />
           <button
             onClick={() => {
               props.addOneToCart(props.product);
-              //   props.updateCartTotal();
             }}
             className="plus"
           ></button>
         </div>
       </td>
       <td>${totalAmount}</td>
-      {/* <td>button</td> */}
     </tr>
   );
 };

@@ -9,8 +9,6 @@ import {
   withRouter
 } from "react-router-dom";
 
-import topNavigationBar from "../src/components/TopNavigationBar";
-import { fetchAllUsers } from "./store/users/actions";
 import login from "../src/components/login/Login";
 import cart from "../src/components/cart/Cart";
 import home from "../src/components/Home";
@@ -29,7 +27,6 @@ function App() {
   const loggedInUser = useSelector(state => state.users.loggedInUser);
 
   useEffect(() => {
-    // dispatch(fetchAllUsers());
     dispatch(fetchAllProducts());
     dispatch(fetchAllTransactions());
     dispatch(fetchAllImages());

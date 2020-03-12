@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import {
   MDBContainer,
-  MDBRow,
   MDBCol,
   MDBInput,
   MDBBtn,
   MDBIcon,
   MDBCard,
   MDBCardBody,
-  MDBModal,
-  MDBModalBody,
-  MDBModalFooter,
   MDBEdgeHeader,
   MDBFreeBird,
   MDBAlert
@@ -45,10 +41,8 @@ const Login = () => {
     <div>
       <TopNav />
 
-      {/* <div style={{ marginTop: "30px" }} /> */}
       <div className="text-left">
         <MDBContainer className="mt-3">
-          {/* <MDBEdgeHeader color="mdb-color darken-2"></MDBEdgeHeader> */}
           <MDBEdgeHeader color="elegant-color-dark"></MDBEdgeHeader>
 
           <MDBFreeBird>

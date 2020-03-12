@@ -23,8 +23,6 @@ const TopNavigationBar = props => {
   const loggedInUser = useSelector(state => state.users.loggedInUser);
   const dispatch = useDispatch();
 
-  console.log("loggedInUser: ", loggedInUser);
-
   const logoutClick = () => {
     dispatch(logoutUser());
   };
@@ -38,7 +36,6 @@ const TopNavigationBar = props => {
         style={{ marginTop: "15px", backgroundColor: "white" }}
       >
         <img
-          // src="https://i.ibb.co/dQcy0LK/H2-STUDIO-FONT-ON-SIDE-BLACK.png"
           src={H2Studio}
           alt="logo"
           height="60"

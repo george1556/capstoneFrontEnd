@@ -55,27 +55,27 @@ export const fetchProduct = id => async dispatch => {
 };
 
 // Add new PRODUCT
-// export const addNewPRODUCT = newPRODUCT => async dispatch => {
-//   dispatch({
-//     type: ADD_NEW_PRODUCT_PENDING
-//   });
+export const addProduct = newProduct => async dispatch => {
+  dispatch({
+    type: ADD_NEW_PRODUCT_PENDING
+  });
 
-//   try {
-//     let response = await axios.post(
-//       `http://localhost:8000/PRODUCTs`,
-//       newPRODUCT
-//     );
-//     dispatch({
-//       type: ADD_NEW_PRODUCT_SUCCESS,
-//       payload: response.data
-//     });
-//   } catch (err) {
-//     dispatch({
-//       type: ADD_NEW_PRODUCT_FAILED,
-//       payload: err
-//     });
-//   }
-// };
+  try {
+    let response = await axios.post(
+      `http://localhost:8080/products`,
+      newProduct
+    );
+    dispatch({
+      type: ADD_NEW_PRODUCT_SUCCESS,
+      payload: response.data
+    });
+  } catch (err) {
+    dispatch({
+      type: ADD_NEW_PRODUCT_FAILED,
+      payload: err
+    });
+  }
+};
 
 // Delete a PRODUCT
 export const deleteProduct = id => async dispatch => {

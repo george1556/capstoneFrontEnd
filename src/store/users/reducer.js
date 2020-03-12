@@ -25,23 +25,23 @@ import {
 const initialState = {
   all: [],
   err: {},
-  // loggedInUser: { id: 0 }
+  loggedInUser: { id: 0 }
 
-  //temporarily hardcoding admin in for testing
-  loggedInUser: {
-    id: 6,
-    firstName: "George",
-    lastName: "Howe",
-    email: "",
-    streetAddress: "",
-    zipCode: "",
-    city: "",
-    state: "",
-    admin: true,
-    accountLocked: false,
-    loginAttempts: 0,
-    userName: "superadmin"
-  }
+  //temporarily hardcoding admin for testing
+  // loggedInUser: {
+  //   id: 6,
+  //   firstName: "George",
+  //   lastName: "Howe",
+  //   email: "",
+  //   streetAddress: "",
+  //   zipCode: "",
+  //   city: "",
+  //   state: "",
+  //   admin: true,
+  //   accountLocked: false,
+  //   loginAttempts: 0,
+  //   userName: "superadmin"
+  // }
 };
 
 export default (state = initialState, action) => {

@@ -19,8 +19,7 @@ const ProductCard = props => {
 
   return (
     <MDBCard
-      className="m-2"
-      // style={{ width: "22rem" }}
+      className="m-2 storeCards"
       style={{
         display: "inline-block",
         width: "18rem"
@@ -33,7 +32,7 @@ const ProductCard = props => {
         cascade
         top
         src={
-          props.product.images == undefined
+          props.product.images === undefined
             ? "https://via.placeholder.com/288x195"
             : props.product.images[0]
         }

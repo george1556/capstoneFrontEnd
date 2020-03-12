@@ -9,14 +9,11 @@ import {
   MDBCard,
   MDBCardBody,
   MDBCardTitle,
-  MDBTooltip,
   MDBTable,
   MDBTableBody,
   MDBTableHead,
-  MDBInput,
   MDBBtn,
   MDBIcon,
-  MDBNavLink,
   MDBCol
 } from "mdbreact";
 import { Link } from "react-router-dom";
@@ -27,8 +24,6 @@ const Cart = props => {
   const cart = useSelector(state => state.shoppingCart.cart);
   const cartTotal = useSelector(state => state.shoppingCart.cartTotal);
   const dispatch = useDispatch();
-
-  //   let newCart = cart;
 
   //Force a re-render. Used when state updates, but page does not re-render as intended.
   const [update, setUpdate] = useState(0);
@@ -89,10 +84,6 @@ const Cart = props => {
     total += Number(currentAmount.toFixed(2));
   });
 
-  //   const updateCartTotal = () => {
-  //     dispatch(updateCart(total.toFixed(2)));
-  //   };
-
   let cartRows = cartArrayWithQuantities.map(cartItem => (
     <CartItem
       product={cartItem}
@@ -115,9 +106,6 @@ const Cart = props => {
               <MDBCardTitle>
                 <MDBIcon icon="shopping-cart"></MDBIcon>&nbsp;&nbsp;You have
                 nothing in your cart.&nbsp;&nbsp;
-                {/* <MDBNavLink size="sm" to="/cart">
-                  Go to store
-                </MDBNavLink> */}
                 <Link to="/store">
                   <MDBBtn color="elegant" size="sm">
                     Go to store&nbsp;&nbsp;
@@ -131,7 +119,6 @@ const Cart = props => {
               <MDBTable hover responsive className="product-table">
                 <MDBTableHead
                   className="font-weight-bold"
-                  //color="mdb-color lighten-5"
                   color="elegant-color-dark"
                   textWhite
                 >
@@ -149,18 +136,6 @@ const Cart = props => {
                   {cartRows}
                   <tr>
                     <td colSpan="5" style={{ textAlign: "right" }}>
-                      {/* <h5>
-                        <b> Total: ${total.toFixed(2)}</b>&nbsp;&nbsp;&nbsp;
-                        <small className="text-muted">
-                            Full name as displayed on card
-                          </small>
-                        <Link to="/checkout">
-                          <MDBBtn color="elegant">
-                            Checkout&nbsp;&nbsp;&nbsp;
-                            <MDBIcon far icon="credit-card" />
-                          </MDBBtn>
-                        </Link>
-                      </h5> */}
                       <MDBRow>
                         <MDBCol sm="5" md="6" lg="9">
                           <h5 style={{ marginBottom: 0, marginTop: "5px" }}>
@@ -179,7 +154,6 @@ const Cart = props => {
                           <Link
                             to={{
                               pathname: "/checkout"
-                              //   state: { total: total.toFixed(2) }
                             }}
                           >
                             <MDBBtn onClick={updateCartTotal} color="elegant">

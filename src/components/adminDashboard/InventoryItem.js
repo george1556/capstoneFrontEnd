@@ -7,16 +7,12 @@ import {
   MDBCol,
   MDBModal,
   MDBModalBody,
-  MDBModalHeader,
-  MDBModalFooter
+  MDBModalHeader
 } from "mdbreact";
 
 const InventoryItem = props => {
-  const [title, setTitle] = useState(props.item.title);
-  const [summary, setSummary] = useState(props.item.summary);
-  const [price, setPrice] = useState(props.item.price);
-  const [description1, setDescription1] = useState(props.item.description1);
-  const [description2, setDescription2] = useState(props.item.description2);
+  const [title] = useState(props.item.title);
+  const [summary] = useState(props.item.summary);
 
   const [deleteModal, setDeleteModal] = useState(false);
 
@@ -40,17 +36,9 @@ const InventoryItem = props => {
             >
               {title}
             </h6>
-            {/* <br /> */}
+
             <div style={{ textAlign: "left" }}>{summary}</div>
-            {/* <input
-          type="text"
-          id="title"
-          className="form-control"
-          defaultValue={title}
-          onChange={e => {
-            setTitle(e.target.value);
-          }}
-        /> */}
+
             <MDBRow>
               <MDBCol>
                 <MDBBtn
@@ -73,7 +61,6 @@ const InventoryItem = props => {
                   size="sm"
                   style={{ display: "block", width: "100%" }}
                   className="adminDeleteButton"
-                  // onClick={() => props.deleteButtonClick(props.item)}
                   onClick={() => setDeleteModal(!deleteModal)}
                 >
                   Delete
@@ -110,9 +97,7 @@ const InventoryItem = props => {
                       </MDBCol>
                       <MDBCol>
                         <MDBBtn
-                          // color="danger"
                           className="adminDeleteButton"
-                          // onClick={() => setDeleteModal(!deleteModal)}
                           onClick={confirmDelete}
                           style={{ display: "block", width: "100%", margin: 0 }}
                         >
@@ -121,10 +106,6 @@ const InventoryItem = props => {
                       </MDBCol>
                     </MDBRow>
                   </MDBModalBody>
-                  {/* <MDBModalFooter> */}
-
-                  {/* <MDBBtn color="primary">Save changes</MDBBtn> */}
-                  {/* </MDBModalFooter> */}
                 </MDBModal>
               </MDBCol>
             </MDBRow>
@@ -134,13 +115,6 @@ const InventoryItem = props => {
       <td></td>
       <td></td>
       <td></td>
-      {/* <input
-      type="text"
-      id="firstName"
-      className="form-control"
-      defaultValue={firstName}
-      readOnly
-    /> */}
     </tr>
   );
 };

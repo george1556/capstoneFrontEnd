@@ -4,10 +4,6 @@ import {
   MDBNav,
   MDBNavItem,
   MDBNavLink,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem,
   MDBContainer,
   MDBIcon,
   MDBRow,
@@ -17,21 +13,23 @@ import {
   MDBTabContent,
   MDBTabPane,
   MDBTable,
-  MDBTableBody,
-  MDBTableHead,
-  MDBCardHeader
+  MDBTableBody
 } from "mdbreact";
 
 import { useSelector, useDispatch } from "react-redux";
 
 import TopNavBar from "../TopNavigationBar";
-
 import InventoryItem from "./InventoryItem";
-
 import EditItem from "./EditItem";
+import NewProduct from "./NewProduct";
+// import NewImages from "./NewImages";
+import DisplayTransactions from "./DisplayTransactions";
 
-import { updateProduct } from "../../store/products/actions";
-import { deleteProduct } from "../../store/products/actions";
+import {
+  updateProduct,
+  deleteProduct,
+  addProduct
+} from "../../store/products/actions";
 
 const Dashboard = () => {
   const products = useSelector(state => state.products.all);
@@ -41,17 +39,19 @@ const Dashboard = () => {
 
   const dispatch = useDispatch();
 
+  const [update, setUpdate] = useState(0);
+
   const togglePills = tab => {
     if (state.activePill !== tab) {
       setstate({ activePill: tab });
     }
   };
 
-  const changeTab = e => {
-    e.preventDefault();
+  // const changeTab = e => {
+  //   e.preventDefault();
 
-    setstate({ activePill: (+state.activePill + 1).toString() });
-  };
+  //   setstate({ activePill: (+state.activePill + 1).toString() });
+  // };
 
   let productListWithImages = products;
 
@@ -59,7 +59,9 @@ const Dashboard = () => {
     productListWithImages.forEach(product => {
       if (image.product.id === product.id) {
         if (product.hasOwnProperty("images")) {
-          product.images.push(image.addressField);
+          if (product.images != null) {
+            product.images.push(image.addressField);
+          }
         } else {
           product["images"] = [];
           product.images.push(image.addressField);
@@ -70,16 +72,23 @@ const Dashboard = () => {
 
   const editButtonClick = item => {
     setEditItem(item);
+    setUpdate(update + 1);
   };
 
   const deleteButtonClick = item => {
-    console.log("DELETE: ", item);
     dispatch(deleteProduct(item.id));
+    setUpdate(update + 1);
   };
 
   const saveChangesClick = item => {
     dispatch(updateProduct(item));
     setEditItem({ id: 0 });
+    setUpdate(update + 1);
+  };
+
+  const addNewProduct = item => {
+    dispatch(addProduct(item));
+    setUpdate(update + 1);
   };
 
   let inventoryRows = productListWithImages.map(item => (
@@ -88,9 +97,6 @@ const Dashboard = () => {
       key={item.id}
       editButtonClick={editButtonClick}
       deleteButtonClick={deleteButtonClick}
-      //   removeOneFromCart={removeOneFromCart}
-      //   addOneToCart={addOneToCart}
-      //   updateCartTotal={updateCartTotal}
     />
   ));
 
@@ -158,10 +164,10 @@ const Dashboard = () => {
                         {state.activePill === "2" ? (
                           <strong>
                             <MDBIcon icon="angle-double-right" />
-                            &nbsp;&nbsp;Add New Inventory
+                            &nbsp;&nbsp;Add New Product
                           </strong>
                         ) : (
-                          <strong>Add New Inventory</strong>
+                          <strong>Add New Product</strong>
                         )}
                       </MDBNavLink>
                     </div>
@@ -188,9 +194,6 @@ const Dashboard = () => {
                   <MDBTabPane tabId="1">
                     <MDBRow>
                       <MDBCol lg="6" sm="12">
-                        {/* <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
-                          Inventory List
-                        </h4> */}
                         <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
                           Current Inventory Items
                         </h4>
@@ -208,16 +211,6 @@ const Dashboard = () => {
                             maxHeight="500px"
                             small
                           >
-                            {/* <MDBTableHead
-                        className="font-weight-bold"
-                        color="elegant-color-dark"
-                        textWhite
-                      >
-                        <tr>
-                          <th>Product</th>
-                        </tr>
-                      </MDBTableHead> */}
-
                             <MDBTableBody className="adminInventoryTable">
                               {inventoryRows}
                             </MDBTableBody>
@@ -229,24 +222,46 @@ const Dashboard = () => {
                           Edit Selected Item
                         </h4>
                         <MDBCard>
-                          <MDBCardBody>
-                            {" "}
-                            {/* <hr /> */}
-                            {editRows}
-                          </MDBCardBody>
+                          <MDBCardBody> {editRows}</MDBCardBody>
                         </MDBCard>
                       </MDBCol>
                     </MDBRow>
                   </MDBTabPane>
                   <MDBTabPane tabId="2">
-                    <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
-                      tab2
-                    </h4>
+                    <MDBRow>
+                      <MDBCol md="1" lg="3" />
+                      <MDBCol md="10" lg="6">
+                        <MDBCard>
+                          <MDBCardBody>
+                            {" "}
+                            <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
+                              Add New Product
+                            </h4>
+                            <hr />
+                            <NewProduct addNewProduct={addNewProduct} />
+                          </MDBCardBody>
+                        </MDBCard>
+                      </MDBCol>
+                      <MDBCol md="1" lg="3" />
+                      {/* <MDBCol>
+                        <MDBCard>
+                          <MDBCardBody>
+                            {" "}
+                            <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
+                              Add Images to Product
+                            </h4>
+                            <hr />
+                            <NewImages />
+                          </MDBCardBody>
+                        </MDBCard>
+                      </MDBCol> */}
+                    </MDBRow>
                   </MDBTabPane>
                   <MDBTabPane tabId="3">
                     <h4 className="mb-4 mt-1 h5 text-center font-weight-bold">
-                      tab3
+                      Transactions
                     </h4>
+                    <DisplayTransactions />
                   </MDBTabPane>
                 </MDBTabContent>
               </MDBCol>

@@ -7,12 +7,12 @@ import {
   ADD_NEW_TRANSACTION_SUCCESS,
   ADD_NEW_TRANSACTION_PENDING,
   ADD_NEW_TRANSACTION_FAILED,
-  UPDATE_TRANSACTION_PENDING,
-  UPDATE_TRANSACTION_FAILED,
-  UPDATE_TRANSACTION_SUCCESS,
-  DELETE_TRANSACTION_FAILED,
-  DELETE_TRANSACTION_PENDING,
-  DELETE_TRANSACTION_SUCCESS,
+  // UPDATE_TRANSACTION_PENDING,
+  // UPDATE_TRANSACTION_FAILED,
+  // UPDATE_TRANSACTION_SUCCESS,
+  // DELETE_TRANSACTION_FAILED,
+  // DELETE_TRANSACTION_PENDING,
+  // DELETE_TRANSACTION_SUCCESS,
   FETCH_TRANSACTION_PENDING,
   FETCH_TRANSACTION_SUCCESS,
   FETCH_TRANSACTION_FAILED,
@@ -22,15 +22,6 @@ import {
 // Set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
 const stripe = require("stripe")("sk_test_a4JBNRdXbbh1atscK9VePkJ8001hNVLtag");
-
-// (async () => {
-//   const paymentIntent = await stripe.paymentIntents.create({
-//     amount: 1000,
-//     currency: "usd",
-//     payment_method_types: ["card"],
-//     receipt_email: "jenny.rosen@example.com"
-//   });
-// })();
 
 // Add new stripeTransaction
 export const stripeTransaction = newStripe => async dispatch => {
